@@ -3,6 +3,7 @@ package com.pioneer.dips.symptoms.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -28,7 +29,8 @@ import com.pioneer.dips.symptoms.repository.symptomRepository;
 @RequestMapping(value = "/api/symptoms")
 public class symptomController {
 	
-	private final symptomRepository repository;
+	@Autowired
+	private final symptomRepository repository;	
 	private final SymptomModelAssembler assembler; 
 	
 	  symptomController(symptomRepository repository, SymptomModelAssembler assembler) {
@@ -67,12 +69,12 @@ public class symptomController {
 	  ResponseEntity<?> replaceSymptom(@RequestBody Symptom newSymptom, @PathVariable Long id) {
 		  Symptom updatedSymptom = repository.findById(id)
 				  .map(symptom ->{
-					  symptom.setsymptom_text(newSymptom.getsymptom_text());
-					  symptom.setsymptom_category_id(newSymptom.getsymptom_category_id());
+					  symptom.setSymptom_text(newSymptom.getSymptom_text());
+					  symptom.setSymptom_category(newSymptom.getSymptom_category());
 					  return repository.save(symptom);
 				  })
 				  .orElseGet(() ->{
-					  newSymptom.setsymptom_id(id);
+					  newSymptom.setSymptom_id(id);
 					  return repository.save(newSymptom);
 				  });
 		  EntityModel<Symptom> symptoms = assembler.toModel(updatedSymptom);

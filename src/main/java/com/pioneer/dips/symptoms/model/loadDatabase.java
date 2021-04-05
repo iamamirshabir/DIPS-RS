@@ -17,8 +17,8 @@ public class loadDatabase {
 	  CommandLineRunner initDatabase(symptomRepository repository) {
 
 	    return args -> {
-	      log.info("Preloading " + repository.save(new Symptom("Sneezing", 1)));
-	      log.info("Preloading " + repository.save(new Symptom("Headache", 1)));
+	      log.info("Preloading ");
+	      log.info("Preloading ");
 	    };
 	  }
 

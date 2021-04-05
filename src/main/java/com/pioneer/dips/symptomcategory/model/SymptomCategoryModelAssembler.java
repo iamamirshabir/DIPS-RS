@@ -17,7 +17,7 @@ public class SymptomCategoryModelAssembler implements RepresentationModelAssembl
 	public EntityModel<SymptomCategory> toModel (SymptomCategory sc){
 	
 		return EntityModel.of(sc, 
-				linkTo(methodOn(symptomCategoryController.class).one(sc.getSc_id())).withSelfRel(),
+				linkTo(methodOn(symptomCategoryController.class).one(sc.getSymptomcategory_id())).withSelfRel(),
 				linkTo(methodOn(symptomCategoryController.class).all()).withRel("symptomcategory"));
 	}
 }

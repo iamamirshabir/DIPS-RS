@@ -17,7 +17,7 @@ public class SymptomModelAssembler implements RepresentationModelAssembler<Sympt
 	public EntityModel<Symptom> toModel (Symptom symptom){
 	
 		return EntityModel.of(symptom, 
-				linkTo(methodOn(symptomController.class).one(symptom.getsymptom_id())).withSelfRel(),
+				linkTo(methodOn(symptomController.class).one(symptom.getSymptom_id())).withSelfRel(),
 				linkTo(methodOn(symptomController.class).all()).withRel("symptom"));
 	}
 }
