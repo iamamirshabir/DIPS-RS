@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pioneer.dips.appointment.model.Appointment;
 import com.pioneer.dips.config.AuditModel;
 import com.pioneer.dips.prescription.model.Prescription;
@@ -88,15 +89,22 @@ public class User extends AuditModel {
 		this.prescription = prescription;
 		this.appointment = appointment;
 	}
+	
 
+	public User() {
+		super();
+	}
+
+	@JsonIgnore	
 	public List<Prescription> getPrescription() {
 		return prescription;
 	}
-
+	
+	
 	public void setPrescription(List<Prescription> prescription) {
 		this.prescription = prescription;
 	}
-
+	@JsonIgnore	
 	public List<Appointment> getAppointment() {
 		return appointment;
 	}

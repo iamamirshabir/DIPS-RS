@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pioneer.dips.config.AuditModel;
 import com.pioneer.dips.diseasecategory.model.Diseasecategory;
 import com.pioneer.dips.symptomcategory.model.SymptomCategory;
@@ -100,6 +101,7 @@ public class Disease extends AuditModel {
 		this.disease_details = disease_details;
 	}
 
+	@JsonIgnore
 	public Diseasecategory getDiseasecategory() {
 		return diseasecategory;
 	}

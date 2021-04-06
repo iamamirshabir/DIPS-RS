@@ -1,6 +1,6 @@
 package com.pioneer.dips.prescription.model;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pioneer.dips.appointment.model.Appointment;
 import com.pioneer.dips.config.AuditModel;
 import com.pioneer.dips.medicine.model.Medicine;
@@ -51,10 +52,10 @@ public class Prescription extends AuditModel {
 	@JoinColumn(name = "userac_id")
 	private User userac;
 	
-	@ManyToMany(mappedBy = "prescription")
+	@ManyToMany(mappedBy = "prescription", cascade = { CascadeType.ALL })
     private List<Symptom> symptom;
 		
-	@ManyToMany(mappedBy = "prescription")
+	@ManyToMany(mappedBy = "prescription", cascade = { CascadeType.ALL })
     private List<Medicine> medicine;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -84,8 +85,26 @@ public class Prescription extends AuditModel {
 		this.medicine = medicine;
 		this.physician = physician;
 	}
-
 	
+
+	public Prescription() {
+		super();
+	}
+
+	public void addMedicine(Medicine m) {
+		if(medicine == null) {
+			medicine = new ArrayList<Medicine>();
+		}
+		this.medicine.add(m);
+	}
+	
+	public void addSymptom(Symptom s) {
+		if(symptom == null) {
+			symptom = new ArrayList<Symptom>();
+		}
+		this.symptom.add(s);
+	}
+	@JsonIgnore	
 	public Appointment getAppointment() {
 		return appointment;
 	}
@@ -109,7 +128,7 @@ public class Prescription extends AuditModel {
 	public void setSymptom(List<Symptom> symptom) {
 		this.symptom = symptom;
 	}
-
+	
 	public List<Medicine> getMedicine() {
 		return medicine;
 	}

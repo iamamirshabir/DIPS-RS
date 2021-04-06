@@ -8,4 +8,5 @@ import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 @Repository
 public interface symptomCategoryRepository extends JpaRepository<SymptomCategory, Long> {
 
+	
 }

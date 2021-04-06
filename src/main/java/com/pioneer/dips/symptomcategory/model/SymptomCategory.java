@@ -1,5 +1,6 @@
 package com.pioneer.dips.symptomcategory.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pioneer.dips.config.AuditModel;
 import com.pioneer.dips.symptoms.model.Symptom;
 
@@ -34,21 +36,29 @@ public class SymptomCategory extends AuditModel{
 	@Column(name = "symptomcategory_title")
 	private String symptomcategory_title;
 	
-	@OneToMany(mappedBy = "symptomcategory", cascade = {
-	        CascadeType.ALL
-	    }, fetch = FetchType.LAZY)
-    private List<Symptom> symptom;	
 	
+	@OneToMany(mappedBy = "symptomcategory",cascade=CascadeType.ALL, fetch = FetchType.LAZY)	
+	private List<Symptom> symptom = new ArrayList<Symptom>();	
+	
+	 @JsonIgnore
 	public List<Symptom> getSymptoms() {
 		return symptom;
 	}
+	public void setSymptoms(List<Symptom> symptoms) {
+		this.symptom = symptoms;
+	}
 
+	
 		public SymptomCategory(long symptomcategory_id, String symptomcategory_title, List<Symptom> symptoms) {
 		super();
 		this.symptomcategory_id = symptomcategory_id;
 		this.symptomcategory_title = symptomcategory_title;
 		this.symptom = symptoms;
-	}
+		}
+
+		public SymptomCategory() {
+			super();
+		}
 
 		public long getSymptomcategory_id() {
 		return symptomcategory_id;
@@ -66,9 +76,6 @@ public class SymptomCategory extends AuditModel{
 		this.symptomcategory_title = symptomcategory_title;
 	}
 
-	public void setSymptoms(List<Symptom> symptoms) {
-		this.symptom = symptoms;
-	}
 
 		@Override
 	  public int hashCode() {

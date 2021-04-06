@@ -1,6 +1,7 @@
 package com.pioneer.dips.symptoms.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pioneer.dips.symptomcategory.model.SymptomCategory;
+import com.pioneer.dips.symptomcategory.repository.symptomCategoryRepository;
 import com.pioneer.dips.symptoms.model.Symptom;
 import com.pioneer.dips.symptoms.model.SymptomModelAssembler;
 import com.pioneer.dips.symptoms.repository.symptomRepository;
@@ -31,11 +34,17 @@ public class symptomController {
 	
 	@Autowired
 	private final symptomRepository repository;	
+	
+	@Autowired
+	private final symptomCategoryRepository symptomcategoryrepository;	
+	
+	
 	private final SymptomModelAssembler assembler; 
 	
-	  symptomController(symptomRepository repository, SymptomModelAssembler assembler) {
+	  symptomController(symptomRepository repository, SymptomModelAssembler assembler,symptomCategoryRepository symptomcategoryrepository) {
 		    this.repository = repository;
 		    this.assembler = assembler;
+		    this.symptomcategoryrepository = symptomcategoryrepository;
 		  }
 	  @CrossOrigin(origins = "http://localhost:8089") 
 	  @GetMapping("/")
@@ -48,8 +57,13 @@ public class symptomController {
 				  linkTo(methodOn(symptomController.class).all()).withSelfRel());
 	  }
 	  
-	  @PostMapping("/")
-	  ResponseEntity<?> newSymptom(@RequestBody Symptom newSymptom ) {
+	  @PostMapping("/symptomcategory/{scId}")
+	  ResponseEntity<?> newSymptom(@PathVariable Long scId,@RequestBody Symptom newSymptom ) {
+		Optional<SymptomCategory> optionalSymptomCategory = symptomcategoryrepository.findById(scId);
+		 if (!optionalSymptomCategory.isPresent()) {
+	            return ResponseEntity.unprocessableEntity().build();
+	        }
+		newSymptom.setSymptom_category(optionalSymptomCategory.get());	
 		EntityModel<Symptom> symptom = assembler.toModel(repository.save(newSymptom));
 		  return ResponseEntity
 				  .created(symptom.getRequiredLink(IanaLinkRelations.SELF).toUri())
@@ -67,14 +81,21 @@ public class symptomController {
 	  
 	  @PutMapping("/{id}")
 	  ResponseEntity<?> replaceSymptom(@RequestBody Symptom newSymptom, @PathVariable Long id) {
+		  Optional<SymptomCategory> optionalSymptomCategory = symptomcategoryrepository.findById(newSymptom.getSymptom_category().getSymptomcategory_id());
+			 if (!optionalSymptomCategory.isPresent()) {
+		            return ResponseEntity.unprocessableEntity().build();
+		        }
+			 				
 		  Symptom updatedSymptom = repository.findById(id)
 				  .map(symptom ->{
 					  symptom.setSymptom_text(newSymptom.getSymptom_text());
 					  symptom.setSymptom_category(newSymptom.getSymptom_category());
+					  symptom.setSymptom_category(optionalSymptomCategory.get());
 					  return repository.save(symptom);
 				  })
 				  .orElseGet(() ->{
 					  newSymptom.setSymptom_id(id);
+					  newSymptom.setSymptom_category(optionalSymptomCategory.get());					  
 					  return repository.save(newSymptom);
 				  });
 		  EntityModel<Symptom> symptoms = assembler.toModel(updatedSymptom);
@@ -86,9 +107,11 @@ public class symptomController {
 	  }
 	  
 	  @DeleteMapping("/{id}")
-	  void deleteSymptom(@PathVariable Long id) {
-	    repository.deleteById(id);
+	  ResponseEntity<?> deleteSymptom(@PathVariable Long id) throws SymptomNotFoundException {
+	  repository.deleteById(id);
+	  return ResponseEntity.noContent().build();
 	  }
 	  
 
 }
+

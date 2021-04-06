@@ -1,4 +1,4 @@
-package com.pioneer.dips.diseasecatergory.repository;
+package com.pioneer.dips.diseasecategory.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

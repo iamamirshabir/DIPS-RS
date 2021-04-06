@@ -1,5 +1,6 @@
 package com.pioneer.dips.symptoms.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pioneer.dips.config.AuditModel;
 import com.pioneer.dips.prescription.model.Prescription;
 import com.pioneer.dips.symptomcategory.model.SymptomCategory;
@@ -22,7 +24,6 @@ import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 @Entity
 @Table(name="symptom")
 public class Symptom extends AuditModel {
-
 	
 	/**
 	 * 
@@ -36,7 +37,7 @@ public class Symptom extends AuditModel {
 	@Column(name = "symptom_text")
 	private String symptom_text;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="symptomcategory_id")
     private SymptomCategory symptomcategory;
 	
@@ -50,11 +51,39 @@ public class Symptom extends AuditModel {
 		
 	}
 	
-	public Symptom(long symptom_id, String symptom_text, SymptomCategory symptom_category) {
+	public Symptom(long symptom_id, String symptom_text, SymptomCategory symptomcategory) {
 		super();
 		this.symptom_id = symptom_id;
 		this.symptom_text = symptom_text;
-		this.symptomcategory = symptom_category;
+		this.symptomcategory = symptomcategory;
+	}
+	
+	public void addPrescription(Prescription p) {
+		if(prescription == null) {
+			prescription = new  ArrayList<Prescription>();
+		}
+		prescription.add(p);
+	}
+
+	public SymptomCategory getSymptomcategory() {
+		return symptomcategory;
+	}
+
+	public void setSymptomcategory(SymptomCategory symptomcategory) {
+		this.symptomcategory = symptomcategory;
+	}
+
+	@JsonIgnore
+	public List<Prescription> getPrescription() {
+		return prescription;
+	}
+
+	public void setPrescription(List<Prescription> prescription) {
+		this.prescription = prescription;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public long getSymptom_id() {
@@ -77,8 +106,8 @@ public class Symptom extends AuditModel {
 		return symptomcategory;
 	}
 
-	public void setSymptom_category(SymptomCategory symptom_category) {
-		this.symptomcategory = symptom_category;
+	public void setSymptom_category(SymptomCategory symptomcategory) {
+		this.symptomcategory = symptomcategory;
 	}
 
 	@Override

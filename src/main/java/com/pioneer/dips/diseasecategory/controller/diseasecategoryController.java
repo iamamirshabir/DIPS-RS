@@ -1,4 +1,4 @@
-package com.pioneer.dips.diseasecatergory.controller;
+package com.pioneer.dips.diseasecategory.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pioneer.dips.diseasecategory.model.Diseasecategory;
 import com.pioneer.dips.diseasecategory.model.DiseasecategoryModelAssembler;
-import com.pioneer.dips.diseasecatergory.repository.diseasecategoryRepository;
+import com.pioneer.dips.diseasecategory.repository.diseasecategoryRepository;
 
 
 @RestController

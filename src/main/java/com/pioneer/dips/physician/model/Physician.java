@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pioneer.dips.appointment.model.Appointment;
 import com.pioneer.dips.config.AuditModel;
 import com.pioneer.dips.prescription.model.Prescription;
@@ -97,6 +98,11 @@ public class Physician extends AuditModel {
 	
 	
 
+	public Physician() {
+		super();
+	}
+	
+	@JsonIgnore	
 	public List<Prescription> getPrescription() {
 		return prescription;
 	}
@@ -104,7 +110,8 @@ public class Physician extends AuditModel {
 	public void setPrescription(List<Prescription> prescription) {
 		this.prescription = prescription;
 	}
-
+	
+	@JsonIgnore	
 	public List<Appointment> getAppointment() {
 		return appointment;
 	}

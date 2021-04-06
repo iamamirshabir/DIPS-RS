@@ -1,6 +1,7 @@
 package com.pioneer.dips.disease.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pioneer.dips.disease.model.Disease;
 import com.pioneer.dips.disease.model.DiseaseModelAssembler;
 import com.pioneer.dips.disease.repository.diseaseRepository;
+import com.pioneer.dips.diseasecategory.model.Diseasecategory;
+import com.pioneer.dips.diseasecategory.repository.diseasecategoryRepository;
+import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 
 @RestController
 @RequestMapping(value = "/api/diseases")
@@ -31,13 +35,21 @@ public class diseaseController {
 	
 	@Autowired
 	private final diseaseRepository repository;	
+	
+	@Autowired
+	private final diseasecategoryRepository dcrepository;	
 	private final DiseaseModelAssembler assembler; 
 	
-	  diseaseController(diseaseRepository repository, DiseaseModelAssembler assembler) {
-		    this.repository = repository;
-		    this.assembler = assembler;
-		  }
-	  @CrossOrigin(origins = "http://localhost:8089") 
+
+	  public diseaseController(diseaseRepository repository, diseasecategoryRepository dcrepository,
+			DiseaseModelAssembler assembler) {
+		super();
+		this.repository = repository;
+		this.dcrepository = dcrepository;
+		this.assembler = assembler;
+	}
+
+	@CrossOrigin(origins = "http://localhost:8089") 
 	  @GetMapping("/")
 	public
 	  CollectionModel<EntityModel<Disease>> all(){
@@ -48,8 +60,13 @@ public class diseaseController {
 				  linkTo(methodOn(diseaseController.class).all()).withSelfRel());
 	  }
 	  
-	  @PostMapping("/")
-	  ResponseEntity<?> newDisease(@RequestBody Disease newDisease ) {
+	  @PostMapping("/diseasecategory/{dcId}")
+	  ResponseEntity<?> newDisease(@PathVariable Long dcId, @RequestBody Disease newDisease ) {
+		 Optional<Diseasecategory> optionalDiseaseCategory = dcrepository.findById(dcId);
+			 if (!optionalDiseaseCategory.isPresent()) {
+		            return ResponseEntity.unprocessableEntity().build();
+		        }  
+				newDisease.setDiseasecategory(optionalDiseaseCategory.get());	
 		EntityModel<Disease> disease = assembler.toModel(repository.save(newDisease));
 		  return ResponseEntity
 				  .created(disease.getRequiredLink(IanaLinkRelations.SELF).toUri())

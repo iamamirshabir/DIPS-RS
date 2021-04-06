@@ -1,4 +1,4 @@
-package com.pioneer.dips.diseasecatergory.controller;
+package com.pioneer.dips.diseasecategory.controller;
 
 public class DiseasecategoryNotFoundException extends RuntimeException {
 

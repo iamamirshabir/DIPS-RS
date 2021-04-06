@@ -7,8 +7,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
+import com.pioneer.dips.diseasecategory.controller.diseasecategoryController;
 import com.pioneer.dips.diseasecategory.model.Diseasecategory;
-import com.pioneer.dips.diseasecatergory.controller.diseasecategoryController;
 
 @Component
 public class DiseasecategoryModelAssembler implements RepresentationModelAssembler<Diseasecategory, EntityModel<Diseasecategory>> {

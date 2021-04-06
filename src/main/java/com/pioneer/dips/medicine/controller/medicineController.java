@@ -1,6 +1,7 @@
 package com.pioneer.dips.medicine.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pioneer.dips.medicine.model.Medicine;
 import com.pioneer.dips.medicine.model.MedicineModelAssembler;
 import com.pioneer.dips.medicine.repository.medicineRepository;
+import com.pioneer.dips.prescription.model.Prescription;
+import com.pioneer.dips.prescription.repository.prescriptionRepository;
+import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 
 @RestController
 @RequestMapping(value = "/api/medicines")
@@ -31,11 +35,17 @@ public class medicineController {
 	
 	@Autowired
 	private final medicineRepository repository;	
+	
+	@Autowired
+	private final prescriptionRepository prepository ;	
+	
 	private final MedicineModelAssembler assembler; 
 	
-	  medicineController(medicineRepository repository, MedicineModelAssembler assembler) {
+	
+	  medicineController(medicineRepository repository, MedicineModelAssembler assembler, prescriptionRepository prepository) {
 		    this.repository = repository;
 		    this.assembler = assembler;
+		    this.prepository = prepository;
 		  }
 	  @CrossOrigin(origins = "http://localhost:8089") 
 	  @GetMapping("/")
@@ -48,9 +58,16 @@ public class medicineController {
 				  linkTo(methodOn(medicineController.class).all()).withSelfRel());
 	  }
 	  
-	  @PostMapping("/")
-	  ResponseEntity<?> newMedicine(@RequestBody Medicine newMedicine ) {
-		EntityModel<Medicine> medicine = assembler.toModel(repository.save(newMedicine));
+	  @PostMapping("/prescription/{pId}")
+	  ResponseEntity<?> newMedicine(@PathVariable Long pId, @RequestBody Medicine newMedicine ) {
+			Optional<Prescription> optionalPrescription = prepository.findById(pId);
+			 if (!optionalPrescription.isPresent()) {
+		            return ResponseEntity.unprocessableEntity().build();
+		        }
+			 newMedicine.addPrescription(optionalPrescription.get());
+			 optionalPrescription.get().addMedicine(newMedicine);
+			 
+		  EntityModel<Medicine> medicine = assembler.toModel(repository.save(newMedicine));
 		  return ResponseEntity
 				  .created(medicine.getRequiredLink(IanaLinkRelations.SELF).toUri())
 				  .body(medicine);

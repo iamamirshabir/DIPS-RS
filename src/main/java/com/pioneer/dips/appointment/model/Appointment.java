@@ -1,6 +1,5 @@
 package com.pioneer.dips.appointment.model;
 
-import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -34,7 +33,7 @@ public class Appointment extends AuditModel {
 	private long appointment_id;
 	
 	@Column(name = "appointment_on")
-	private Date appointment_on;	
+	private String appointment_on;	
 	
     @OneToOne(mappedBy = "appointment")
     private Prescription prescription;
@@ -57,7 +56,7 @@ public class Appointment extends AuditModel {
 	    return "SYMPTOM{" + "id=" + this.appointment_id + ", on='" + this.appointment_on + '\''  + '}';
 	  }
 
-	public Appointment(long appointment_id, Date appointment_on, Prescription prescription, User user,
+	public Appointment(long appointment_id, String appointment_on, Prescription prescription, User user,
 			Physician physician) {
 		super();
 		this.appointment_id = appointment_id;
@@ -65,6 +64,11 @@ public class Appointment extends AuditModel {
 		this.prescription = prescription;
 		this.userac = user;
 		this.physician = physician;
+	}
+	
+
+	public Appointment() {
+		super();
 	}
 
 	public Prescription getPrescription() {
@@ -103,11 +107,11 @@ public class Appointment extends AuditModel {
 		this.appointment_id = appointment_id;
 	}
 
-	public Date getAppointment_on() {
+	public String getAppointment_on() {
 		return appointment_on;
 	}
 
-	public void setAppointment_on(Date appointment_on) {
+	public void setAppointment_on(String appointment_on) {
 		this.appointment_on = appointment_on;
 	}
 	

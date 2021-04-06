@@ -1,5 +1,6 @@
 package com.pioneer.dips.medicine.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pioneer.dips.config.AuditModel;
 import com.pioneer.dips.prescription.model.Prescription;
 import com.pioneer.dips.symptomcategory.model.SymptomCategory;
@@ -50,7 +52,7 @@ public class Medicine extends AuditModel {
     @JoinTable(name = "medicine_prescription", 
       joinColumns = @JoinColumn(name = "medicine_id"), 
       inverseJoinColumns = @JoinColumn(name = "prescription_id"))
-    private List<Prescription> prescription;
+    private List<Prescription> prescription= new ArrayList <Prescription>();
 	
 	
 		@Override
@@ -73,7 +75,20 @@ public class Medicine extends AuditModel {
 		this.medicine_dosage = medicine_dosage;
 		this.prescription = prescription;
 	}
+	
+	
+	public Medicine() {
+		super();
+	}
 
+	public void addPrescription(Prescription p) {
+		if(prescription == null) {
+			prescription = new ArrayList<Prescription>();
+		}
+		this.prescription.add(p);
+	}
+
+	@JsonIgnore
 	public List<Prescription> getPrescription() {
 		return prescription;
 	}

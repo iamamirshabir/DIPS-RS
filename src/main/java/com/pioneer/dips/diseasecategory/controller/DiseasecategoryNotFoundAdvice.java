@@ -1,4 +1,4 @@
-package com.pioneer.dips.diseasecatergory.controller;
+package com.pioneer.dips.diseasecategory.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

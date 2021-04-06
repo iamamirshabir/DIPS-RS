@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 import com.pioneer.dips.symptomcategory.model.SymptomCategoryModelAssembler;
 import com.pioneer.dips.symptomcategory.repository.symptomCategoryRepository;
-import com.pioneer.dips.symptoms.repository.symptomRepository;
 
 @RestController
 @RequestMapping(value = "/api/symptomcategory")

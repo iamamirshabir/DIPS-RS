@@ -1,6 +1,7 @@
 package com.pioneer.dips.appointment.contorller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pioneer.dips.appointment.model.Appointment;
 import com.pioneer.dips.appointment.model.AppointmentModelAssembler;
 import com.pioneer.dips.appointment.repository.appointmentRepository;
+import com.pioneer.dips.physician.model.Physician;
+import com.pioneer.dips.physician.repository.physicianRepository;
+import com.pioneer.dips.user.model.User;
+import com.pioneer.dips.user.repository.userRepository;
 
 
 
@@ -33,13 +38,26 @@ public class appointmentController {
 	
 	@Autowired
 	private final appointmentRepository repository;	
+	
+	@Autowired
+	private final userRepository urepository;
+	
+	@Autowired
+	private final physicianRepository prepository;
+	
 	private final AppointmentModelAssembler assembler; 
 	
-	  appointmentController(appointmentRepository repository, AppointmentModelAssembler assembler) {
-		    this.repository = repository;
-		    this.assembler = assembler;
-		  }
-	  @CrossOrigin(origins = "http://localhost:8089") 
+	  
+	  public appointmentController(appointmentRepository repository, userRepository urepository,
+			physicianRepository prepository, AppointmentModelAssembler assembler) {
+		super();
+		this.repository = repository;
+		this.urepository = urepository;
+		this.prepository = prepository;
+		this.assembler = assembler;
+	}
+
+	@CrossOrigin(origins = "http://localhost:8089") 
 	  @GetMapping("/")
 	public
 	  CollectionModel<EntityModel<Appointment>> all(){
@@ -50,9 +68,20 @@ public class appointmentController {
 				  linkTo(methodOn(appointmentController.class).all()).withSelfRel());
 	  }
 	  
-	  @PostMapping("/")
-	  ResponseEntity<?> newAppointment(@RequestBody Appointment newAppointment ) {
-		EntityModel<Appointment> appointment = assembler.toModel(repository.save(newAppointment));
+	  @PostMapping("/user/{uId}/physician/{pId}")
+	  ResponseEntity<?> newAppointment(@RequestBody Appointment newAppointment, @PathVariable Long uId, @PathVariable Long pId ) {
+		  Optional<User> optionalUser = urepository.findById(uId);
+			 if (!optionalUser.isPresent()) {
+		            return ResponseEntity.unprocessableEntity().build();
+		        }
+			 Optional<Physician> optionalPhysician = prepository.findById(pId);
+			 if (!optionalPhysician.isPresent()) {
+		            return ResponseEntity.unprocessableEntity().build();
+		        }
+			 newAppointment.setUser(optionalUser.get());
+			 newAppointment.setPhysician(optionalPhysician.get());
+		
+		  EntityModel<Appointment> appointment = assembler.toModel(repository.save(newAppointment));
 		  return ResponseEntity
 				  .created(appointment.getRequiredLink(IanaLinkRelations.SELF).toUri())
 				  .body(appointment);
