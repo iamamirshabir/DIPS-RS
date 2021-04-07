@@ -102,13 +102,6 @@ public class Symptom extends AuditModel {
 		this.symptom_text = symptom_text;
 	}
 
-	public SymptomCategory getSymptom_category() {
-		return symptomcategory;
-	}
-
-	public void setSymptom_category(SymptomCategory symptomcategory) {
-		this.symptomcategory = symptomcategory;
-	}
 
 	@Override
 	  public int hashCode() {

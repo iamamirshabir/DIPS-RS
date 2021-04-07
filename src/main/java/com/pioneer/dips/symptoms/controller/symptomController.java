@@ -63,7 +63,7 @@ public class symptomController {
 		 if (!optionalSymptomCategory.isPresent()) {
 	            return ResponseEntity.unprocessableEntity().build();
 	        }
-		newSymptom.setSymptom_category(optionalSymptomCategory.get());	
+		newSymptom.setSymptomcategory(optionalSymptomCategory.get());	
 		EntityModel<Symptom> symptom = assembler.toModel(repository.save(newSymptom));
 		  return ResponseEntity
 				  .created(symptom.getRequiredLink(IanaLinkRelations.SELF).toUri())
@@ -81,7 +81,7 @@ public class symptomController {
 	  
 	  @PutMapping("/{id}")
 	  ResponseEntity<?> replaceSymptom(@RequestBody Symptom newSymptom, @PathVariable Long id) {
-		  Optional<SymptomCategory> optionalSymptomCategory = symptomcategoryrepository.findById(newSymptom.getSymptom_category().getSymptomcategory_id());
+		  Optional<SymptomCategory> optionalSymptomCategory = symptomcategoryrepository.findById(newSymptom.getSymptomcategory().getSymptomcategory_id());
 			 if (!optionalSymptomCategory.isPresent()) {
 		            return ResponseEntity.unprocessableEntity().build();
 		        }
@@ -89,13 +89,13 @@ public class symptomController {
 		  Symptom updatedSymptom = repository.findById(id)
 				  .map(symptom ->{
 					  symptom.setSymptom_text(newSymptom.getSymptom_text());
-					  symptom.setSymptom_category(newSymptom.getSymptom_category());
-					  symptom.setSymptom_category(optionalSymptomCategory.get());
+					  symptom.setSymptomcategory(newSymptom.getSymptomcategory());
+					  symptom.setSymptomcategory(optionalSymptomCategory.get());
 					  return repository.save(symptom);
 				  })
 				  .orElseGet(() ->{
 					  newSymptom.setSymptom_id(id);
-					  newSymptom.setSymptom_category(optionalSymptomCategory.get());					  
+					  newSymptom.setSymptomcategory(optionalSymptomCategory.get());					  
 					  return repository.save(newSymptom);
 				  });
 		  EntityModel<Symptom> symptoms = assembler.toModel(updatedSymptom);

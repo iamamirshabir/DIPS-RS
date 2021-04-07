@@ -37,7 +37,7 @@ public class SymptomCategory extends AuditModel{
 	private String symptomcategory_title;
 	
 	
-	@OneToMany(mappedBy = "symptomcategory",cascade=CascadeType.ALL, fetch = FetchType.LAZY)	
+	@OneToMany(mappedBy = "symptomcategory",cascade={CascadeType.ALL})	
 	private List<Symptom> symptom = new ArrayList<Symptom>();	
 	
 	 @JsonIgnore

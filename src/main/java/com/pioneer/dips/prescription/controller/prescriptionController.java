@@ -1,5 +1,6 @@
 package com.pioneer.dips.prescription.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -80,25 +81,31 @@ public class prescriptionController {
 		  return CollectionModel.of(prescriptions,
 				  linkTo(methodOn(prescriptionController.class).all()).withSelfRel());
 	  }
-	  
-	  @PostMapping("/user/{uId}/physician/{pId}/appointment/{aId}")
-	  ResponseEntity<?> newPrescription(@RequestBody Prescription newPrescription, @PathVariable Long uId, @PathVariable Long pId, @PathVariable Long aId  ) {
-		  Optional<User> optionalUser = urepository.findById(uId);
-			 if (!optionalUser.isPresent()) {
-		            return ResponseEntity.unprocessableEntity().build();
-		        }
-			 Optional<Physician> optionalPhysician = prepository.findById(pId);
-			 if (!optionalPhysician.isPresent()) {
-		            return ResponseEntity.unprocessableEntity().build();
-		        }
-			 Optional<Appointment> optionalAppointment = arepository.findById(aId);
+	@CrossOrigin(origins = "http://localhost:8089")
+	@GetMapping("/user/{uId}")
+	public
+	  CollectionModel<EntityModel<Prescription>> getByUser(@PathVariable Long uId){
+		Optional<User> optionalUser = urepository.findById(uId);
+		 if (!optionalUser.isPresent()) {
+	            return CollectionModel.empty();
+	        }
+		  List<EntityModel<Prescription>> prescriptions = optionalUser.get().getPrescription().stream()
+				  .map(assembler :: toModel)
+				  .collect(Collectors.toList());
+		  return CollectionModel.of(prescriptions,
+				  linkTo(methodOn(prescriptionController.class).all()).withSelfRel());
+	  }
+		@CrossOrigin(origins = "http://localhost:8089")
+	  @PostMapping("/appointment/{aId}")
+	  ResponseEntity<?> newPrescription(@RequestBody Prescription newPrescription, @PathVariable Long aId  ) {
+		Optional<Appointment> optionalAppointment = arepository.findById(aId);
 			 if (!optionalAppointment.isPresent()) {
 		            return ResponseEntity.unprocessableEntity().build();
 		        }
-			 newPrescription.setUser(optionalUser.get());
-			 newPrescription.setPhysician(optionalPhysician.get());
 			 newPrescription.setAppointment(optionalAppointment.get());
-		  EntityModel<Prescription> prescription = assembler.toModel(repository.save(newPrescription));
+			 newPrescription.setUser(optionalAppointment.get().getUser());
+			 newPrescription.setPhysician(optionalAppointment.get().getPhysician());
+			EntityModel<Prescription> prescription = assembler.toModel(repository.save(newPrescription));
 		  return ResponseEntity
 				  .created(prescription.getRequiredLink(IanaLinkRelations.SELF).toUri())
 				  .body(prescription);
@@ -112,7 +119,7 @@ public class prescriptionController {
 				  .orElseThrow(() -> new PrescriptionNotFoundException(id));
 		  return assembler.toModel(prescription);
 	  }
-	  
+	  @CrossOrigin(origins = "http://localhost:8089")
 	  @PutMapping("/{id}")
 	  ResponseEntity<?> replacePrescription(@RequestBody Prescription newPrescription, @PathVariable Long id) {
 		  Prescription updatedPrescription = repository.findById(id)
@@ -132,30 +139,36 @@ public class prescriptionController {
 				  .body(prescriptions);
 					 
 	  }
-	  
-	  @PutMapping("/{id}/symptom/{sId}")
-	  ResponseEntity<?> updatePrescription(@RequestBody Prescription newPrescription, @PathVariable Long id, @PathVariable Long sId) {
-		  Optional<Symptom> optionalSymptom = srepository.findById(sId);
-			 if (!optionalSymptom.isPresent()) {
+	  @CrossOrigin(origins = "http://localhost:8089")
+	  @PutMapping("/{id}/symptoms/")
+	  ResponseEntity<?> updatePrescription(@RequestBody Long[] selectedSymptoms, @PathVariable Long id) {
+		  Optional<Prescription> optionalPrescription = repository.findById(id);
+			 if (!optionalPrescription.isPresent()) {
 		            return ResponseEntity.unprocessableEntity().build();
-		        }
-		  Prescription updatedPrescription = repository.findById(id)
-				  .map(prescription ->{
-					  prescription.addSymptom(optionalSymptom.get());
-					  optionalSymptom.get().addPrescription(prescription);
-					  return repository.save(prescription);
-				  })
-				  .orElseGet(() ->{
-					  newPrescription.setPrescription_id(id);
-					  return repository.save(newPrescription);
-				  });
-		  EntityModel<Prescription> prescriptions = assembler.toModel(updatedPrescription);
+		        }  
+			 else {
+				 Prescription updatedPrescription = optionalPrescription.get();
+				 List<Symptom> symptoms = new ArrayList<>();
+					  for(int i=0;i<selectedSymptoms.length;i++) {
+						  Optional<Symptom> optionalSymptom = srepository.findById(selectedSymptoms[i]);
+							 if (!optionalSymptom.isPresent()) {
+						            return ResponseEntity.unprocessableEntity().build();
+						        }  
+							 symptoms.add(optionalSymptom.get());
+							 optionalSymptom.get().addPrescription(updatedPrescription);							  
+					  }
+					  updatedPrescription.setSymptom(symptoms);
+					  repository.save(updatedPrescription);
+					  EntityModel<Prescription> prescriptions = assembler.toModel(updatedPrescription);
+					  
+					  return ResponseEntity
+							  .created(prescriptions.getRequiredLink(IanaLinkRelations.SELF).toUri())
+							  .body(prescriptions);
+					
+			  }
+		 }
 		  
-		  return ResponseEntity
-				  .created(prescriptions.getRequiredLink(IanaLinkRelations.SELF).toUri())
-				  .body(prescriptions);
-					 
-	  }
+		
 	  
 	  @DeleteMapping("/{id}")
 	  void deletePrescription(@PathVariable Long id) {
