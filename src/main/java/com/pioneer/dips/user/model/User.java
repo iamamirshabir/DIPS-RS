@@ -10,8 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pioneer.dips.appointment.model.Appointment;
 import com.pioneer.dips.config.AuditModel;
 import com.pioneer.dips.prescription.model.Prescription;
-import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 
 @Entity
 @Table(name="userac")
@@ -28,7 +25,7 @@ public class User extends AuditModel {
 	/**
 	 * 
 	 */
-	private static final long seracialVersionUID = -2595048583772454461L;
+	private static final long serialVersionUID = 1L;
 
 	@Id 
 	@GeneratedValue(strategy = GenerationType.AUTO)	
@@ -170,7 +167,7 @@ public class User extends AuditModel {
 	}
 
 	public static long getSerialversionuid() {
-		return seracialVersionUID;
+		return serialVersionUID;
 	}
 
 }

@@ -1,8 +1,11 @@
 package com.pioneer.dips.appointment.contorller;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -67,25 +70,52 @@ public class appointmentController {
 		  return CollectionModel.of(appointments,
 				  linkTo(methodOn(appointmentController.class).all()).withSelfRel());
 	  }
-	  
+	@CrossOrigin(origins = "http://localhost:8089") 
 	  @PostMapping("/user/{uId}/physician/{pId}")
 	  ResponseEntity<?> newAppointment(@RequestBody Appointment newAppointment, @PathVariable Long uId, @PathVariable Long pId ) {
 		  Optional<User> optionalUser = urepository.findById(uId);
 			 if (!optionalUser.isPresent()) {
 		            return ResponseEntity.unprocessableEntity().build();
-		        }
+		        }			 
 			 Optional<Physician> optionalPhysician = prepository.findById(pId);
 			 if (!optionalPhysician.isPresent()) {
 		            return ResponseEntity.unprocessableEntity().build();
 		        }
+			 List<Appointment> appointments = repository.findByDate(newAppointment.getAppointment_on(), pId);
+			 if(appointments.size() == optionalPhysician.get().getPhysician_max_daily()) {
+				 int days[] = new int[7] ;
+				 int day = 0;
+				 days=Stream.of(optionalPhysician.get().getPhysician_availability().split(","))
+				 	.mapToInt(Integer::parseInt)
+	                .toArray();
+				 System.out.println("Before "+days);
+				 Calendar cal = Calendar.getInstance();
+				 cal.setTime(newAppointment.getAppointment_on());
+				 day= cal.get(Calendar.DAY_OF_WEEK);
+				 System.out.println("Day "+ day);
+				 days[day-1] = 0;
+				 System.out.println("After "+IntStream.of(days)
+                 .mapToObj(Integer::toString)
+                 .collect(Collectors.joining(",")));
+				 optionalPhysician.get().setPhysician_availability(""+IntStream.of(days)
+                         .mapToObj(Integer::toString)
+                         .collect(Collectors.joining(",")));
+				 prepository.save(optionalPhysician.get());
+				 
+				 return ResponseEntity.badRequest().body("Now, Physician has max daily appointments reached");
+			 }
+			 List<Appointment> userappointments = repository.findByUser(uId);
+			 if(userappointments.size() >= 1) {
+				 return ResponseEntity.badRequest().body("User Cannot have more than one appointment at once");					
+			 }
+			 
 			 newAppointment.setUser(optionalUser.get());
 			 newAppointment.setPhysician(optionalPhysician.get());
-		
+			 
 		  EntityModel<Appointment> appointment = assembler.toModel(repository.save(newAppointment));
 		  return ResponseEntity
 				  .created(appointment.getRequiredLink(IanaLinkRelations.SELF).toUri())
 				  .body(appointment);
-	   
 	  }
 	  @CrossOrigin(origins = "http://localhost:8089")
 	  @GetMapping("/{id}")

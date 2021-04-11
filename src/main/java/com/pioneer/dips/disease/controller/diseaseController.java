@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pioneer.dips.disease.model.Disease;
@@ -27,7 +28,6 @@ import com.pioneer.dips.disease.model.DiseaseModelAssembler;
 import com.pioneer.dips.disease.repository.diseaseRepository;
 import com.pioneer.dips.diseasecategory.model.Diseasecategory;
 import com.pioneer.dips.diseasecategory.repository.diseasecategoryRepository;
-import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 
 @RestController
 @RequestMapping(value = "/api/diseases")
@@ -50,7 +50,7 @@ public class diseaseController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:8089") 
-	  @GetMapping("/")
+	@GetMapping("/")
 	public
 	  CollectionModel<EntityModel<Disease>> all(){
 		  List<EntityModel<Disease>> diseases = repository.findAll().stream()
@@ -59,7 +59,19 @@ public class diseaseController {
 		  return CollectionModel.of(diseases,
 				  linkTo(methodOn(diseaseController.class).all()).withSelfRel());
 	  }
-	  
+	
+	@CrossOrigin(origins = "http://localhost:8089") 
+	  @GetMapping("/filterByName/")
+	  public
+	  ResponseEntity<?> getByEmail(@RequestParam(name = "name") String name){
+		  Optional<Disease> optionalDisease = repository.findByName(name);
+		  if (!optionalDisease.isPresent()) {
+	            return ResponseEntity.unprocessableEntity().build();
+	        }
+		  return ResponseEntity.ok().body(assembler.toModel(optionalDisease.get()));
+	   }
+	
+	  @CrossOrigin(origins = "http://localhost:8089")
 	  @PostMapping("/diseasecategory/{dcId}")
 	  ResponseEntity<?> newDisease(@PathVariable Long dcId, @RequestBody Disease newDisease ) {
 		 Optional<Diseasecategory> optionalDiseaseCategory = dcrepository.findById(dcId);

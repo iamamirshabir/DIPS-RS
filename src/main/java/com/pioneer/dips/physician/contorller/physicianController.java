@@ -1,6 +1,7 @@
 package com.pioneer.dips.physician.contorller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pioneer.dips.physician.model.Physician;
@@ -37,6 +39,7 @@ public class physicianController {
 		    this.repository = repository;
 		    this.assembler = assembler;
 		  }
+	  
 	  @CrossOrigin(origins = "http://localhost:8089") 
 	  @GetMapping("/")
 	public
@@ -48,6 +51,17 @@ public class physicianController {
 				  linkTo(methodOn(physicianController.class).all()).withSelfRel());
 	  }
 	  
+	  @CrossOrigin(origins = "http://localhost:8089") 
+	  @GetMapping("/filterByEmail/")
+	  public
+	  ResponseEntity<?> getByEmail(@RequestParam(name = "email") String email){
+		  Optional<Physician> optionalPhysician = repository.findByEmail(email);
+		  if (!optionalPhysician.isPresent()) {
+	            return ResponseEntity.unprocessableEntity().build();
+	        }
+		  return ResponseEntity.ok().body(assembler.toModel(optionalPhysician.get()));
+	   }
+	  @CrossOrigin(origins = "http://localhost:8089") 
 	  @PostMapping("/")
 	  ResponseEntity<?> newPhysician(@RequestBody Physician newPhysician ) {
 		EntityModel<Physician> physician = assembler.toModel(repository.save(newPhysician));
@@ -70,6 +84,7 @@ public class physicianController {
 		  Physician updatedPhysician = repository.findById(id)
 				  .map(physician ->{
 					  physician.setPhysician_name(newPhysician.getPhysician_name());
+					  physician.setPhysician_email(newPhysician.getPhysician_email());
 					  physician.setPhysician_spec(newPhysician.getPhysician_spec());
 					  physician.setPhysician_address(newPhysician.getPhysician_address());
 					  physician.setPhysician_visit_days(newPhysician.getPhysician_visit_days());

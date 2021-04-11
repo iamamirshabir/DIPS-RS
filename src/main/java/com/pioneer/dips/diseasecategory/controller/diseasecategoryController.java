@@ -27,7 +27,7 @@ import com.pioneer.dips.diseasecategory.repository.diseasecategoryRepository;
 
 
 @RestController
-@RequestMapping(value = "/api/diseasecategorys")
+@RequestMapping(value = "/api/diseasecategory")
 public class diseasecategoryController {
 	
 	@Autowired
@@ -49,6 +49,7 @@ public class diseasecategoryController {
 				  linkTo(methodOn(diseasecategoryController.class).all()).withSelfRel());
 	  }
 	  
+	  @CrossOrigin(origins = "http://localhost:8089") 
 	  @PostMapping("/")
 	  ResponseEntity<?> newDiseasecategory(@RequestBody Diseasecategory newDiseasecategory ) {
 		EntityModel<Diseasecategory> diseasecategory = assembler.toModel(repository.save(newDiseasecategory));

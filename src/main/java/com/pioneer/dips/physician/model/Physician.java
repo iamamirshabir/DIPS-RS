@@ -1,6 +1,5 @@
 package com.pioneer.dips.physician.model;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pioneer.dips.appointment.model.Appointment;
 import com.pioneer.dips.config.AuditModel;
 import com.pioneer.dips.prescription.model.Prescription;
-import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 
 @Entity
 @Table(name="physician")
@@ -38,14 +34,23 @@ public class Physician extends AuditModel {
 	@Column(name = "physician_name")
 	private String physician_name;	
 	
+	@Column(name = "physician_email")
+	private String physician_email;	
+	
 	@Column(name = "physician_spec")
 	private String physician_spec;	
 
 	@Column(name = "physician_address")
 	private String physician_address;	
 
+	@Column(name = "physician_max_daily")
+	private int physician_max_daily;
+	
 	@Column(name = "physician_visit_days")
 	private String physician_visit_days;	
+	
+	@Column(name = "physician_availability")
+	private String physician_availability;
 
 	@Column(name = "physician_time_start")
 	private int physician_time_start;	
@@ -79,15 +84,27 @@ public class Physician extends AuditModel {
 	    return "PHYSICIAN{" + "id=" + this.physician_id + ", spec='" + this.physician_spec + ", address='" + this.physician_address + ", visit_days='" + this.physician_visit_days + ", time_start='" + this.physician_time_start + ", time_end='" + this.physician_time_end + ", keycloak_id='" + this.physician_keycloak_id + ", keycloak_username='" + this.physician_keycloak_username + '\''  + '}';
 	  }
 
-	public Physician(long physician_id, String physician_name, String physician_spec, String physician_address,
-			String physician_visit_days, int physician_time_start, int physician_time_end, String physician_keycloak_id,
-			String physician_keycloak_username, List<Prescription> prescription, List<Appointment> appointment) {
+
+	
+	
+
+
+
+
+	public Physician(long physician_id, String physician_name, String physician_email, String physician_spec,
+			String physician_address, int physician_max_daily, String physician_visit_days,
+			String physician_availability, int physician_time_start, int physician_time_end,
+			String physician_keycloak_id, String physician_keycloak_username, List<Prescription> prescription,
+			List<Appointment> appointment) {
 		super();
 		this.physician_id = physician_id;
 		this.physician_name = physician_name;
+		this.physician_email = physician_email;
 		this.physician_spec = physician_spec;
 		this.physician_address = physician_address;
+		this.physician_max_daily = physician_max_daily;
 		this.physician_visit_days = physician_visit_days;
+		this.physician_availability = physician_availability;
 		this.physician_time_start = physician_time_start;
 		this.physician_time_end = physician_time_end;
 		this.physician_keycloak_id = physician_keycloak_id;
@@ -95,13 +112,36 @@ public class Physician extends AuditModel {
 		this.prescription = prescription;
 		this.appointment = appointment;
 	}
-	
-	
 
 	public Physician() {
 		super();
-	}
+	}	
 	
+	
+	public int getPhysician_max_daily() {
+		return physician_max_daily;
+	}
+
+	public void setPhysician_max_daily(int physician_max_daily) {
+		this.physician_max_daily = physician_max_daily;
+	}
+
+	public String getPhysician_availability() {
+		return physician_availability;
+	}
+
+	public void setPhysician_availability(String physician_availability) {
+		this.physician_availability = physician_availability;
+	}
+
+	public String getPhysician_email() {
+		return physician_email;
+	}
+
+	public void setPhysician_email(String physician_email) {
+		this.physician_email = physician_email;
+	}
+
 	@JsonIgnore	
 	public List<Prescription> getPrescription() {
 		return prescription;

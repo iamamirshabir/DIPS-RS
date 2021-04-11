@@ -1,6 +1,7 @@
 package com.pioneer.dips.user.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pioneer.dips.user.model.User;
@@ -39,7 +41,7 @@ public class userController {
 		  }
 	  @CrossOrigin(origins = "http://localhost:8089") 
 	  @GetMapping("/")
-	public
+	  public
 	  CollectionModel<EntityModel<User>> all(){
 		  List<EntityModel<User>> users = repository.findAll().stream()
 				  .map(assembler :: toModel)
@@ -48,14 +50,26 @@ public class userController {
 				  linkTo(methodOn(userController.class).all()).withSelfRel());
 	  }
 	  
+	  @CrossOrigin(origins = "http://localhost:8089") 
+	  @GetMapping("/filterByEmail/")
+	  public
+	  ResponseEntity<?> getByEmail(@RequestParam(name = "email") String email){
+		  Optional<User> optionalUser = repository.findByEmail(email);
+		  if (!optionalUser.isPresent()) {
+	            return ResponseEntity.unprocessableEntity().build();
+	        }
+		  return ResponseEntity.ok().body(assembler.toModel(optionalUser.get()));
+	   }
+	  
+	  @CrossOrigin(origins = "http://localhost:8089") 
 	  @PostMapping("/")
 	  ResponseEntity<?> newUser(@RequestBody User newUser ) {
 		EntityModel<User> user = assembler.toModel(repository.save(newUser));
 		  return ResponseEntity
 				  .created(user.getRequiredLink(IanaLinkRelations.SELF).toUri())
 				  .body(user);
-	   
 	  }
+	  
 	  @CrossOrigin(origins = "http://localhost:8089")
 	  @GetMapping("/{id}")
 	public

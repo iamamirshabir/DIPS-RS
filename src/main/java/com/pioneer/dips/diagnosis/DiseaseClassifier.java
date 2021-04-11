@@ -29,7 +29,7 @@ public class DiseaseClassifier {
 		System.out.println("Attributes # "+ structure.numAttributes()+",Instances #"+ structure.numInstances());
 		return nbu;
 	}
-	public String classify(NaiveBayesUpdateable nbu, String token) throws Exception {
+	public DiagnosisResult classify(NaiveBayesUpdateable nbu, String token) throws Exception {
 		double[] arr = Stream.of(token.split(","))
                 .mapToDouble (Double::parseDouble)
                .toArray();
@@ -61,18 +61,27 @@ public class DiseaseClassifier {
 					indexOfDiseases[2] = i;
 				}
 			}
-			diseases[0]= structure.attribute(0).value(indexOfDiseases[0]);
-			diseases[1]= structure.attribute(0).value(indexOfDiseases[1]);
-			diseases[2]= structure.attribute(0).value(indexOfDiseases[2]);
-			System.out.println("=======================================================");
-			System.out.println("===<< R E S U L T >>===================================");
-			System.out.println("__________________________________");
-			System.out.println("Most probably you have,\n"+ diseases[0]+"( "+nbProb[0]+" )");
-			System.out.println("__________________________________");
-			//System.out.println("Disease Instance = "+str.attribute(0).value((int)instClass));
-			System.out.println("=======================================================");
-			System.out.println(test.toString());
-			return ("Most probably you have,\n"+ diseases[0]+"( "+nbProb[0]+" )");
+			for(int i=0 ; i<3 ; i++ ) {
+				diseases[i]= structure.attribute(0).value(indexOfDiseases[i]);	
+			}
+			DiagnosisResult diagnosisResult = new DiagnosisResult();
+			diagnosisResult.setPotentialDiseases(diseases);
+			diagnosisResult.setDiseaseProb(nbProb);
+			diagnosisResult.setInstanceString(test.toString());
+			diagnosisResult.setClassIndex(indexOfDiseases[0]);
+			
+			//testing evironment
+			
+			//System.out.println("=======================================================");
+			//System.out.println("===<< R E S U L T >>===================================");
+			//System.out.println("__________________________________");
+			//System.out.println("Most probably you have,\n"+ diseases[0]+"( "+nbProb[0]+" )");
+			//System.out.println("__________________________________");
+			////System.out.println("Disease Instance = "+str.attribute(0).value((int)instClass));
+			//System.out.println("=======================================================");
+			//System.out.println(test.toString());
+			//return ("Most probably you have,\n"+ diseases[0]+"( "+nbProb[0]+" )");
+			return diagnosisResult;
 	}
 		//String token = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
 		

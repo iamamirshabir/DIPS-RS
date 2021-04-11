@@ -27,7 +27,6 @@ import com.pioneer.dips.medicine.model.MedicineModelAssembler;
 import com.pioneer.dips.medicine.repository.medicineRepository;
 import com.pioneer.dips.prescription.model.Prescription;
 import com.pioneer.dips.prescription.repository.prescriptionRepository;
-import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 
 @RestController
 @RequestMapping(value = "/api/medicines")

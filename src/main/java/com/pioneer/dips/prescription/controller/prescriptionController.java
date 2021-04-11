@@ -25,12 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pioneer.dips.appointment.model.Appointment;
 import com.pioneer.dips.appointment.repository.appointmentRepository;
-import com.pioneer.dips.physician.model.Physician;
 import com.pioneer.dips.physician.repository.physicianRepository;
 import com.pioneer.dips.prescription.model.Prescription;
 import com.pioneer.dips.prescription.model.PrescriptionModelAssembler;
 import com.pioneer.dips.prescription.repository.prescriptionRepository;
-import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 import com.pioneer.dips.symptoms.model.Symptom;
 import com.pioneer.dips.symptoms.repository.symptomRepository;
 import com.pioneer.dips.user.model.User;
@@ -48,10 +46,7 @@ public class prescriptionController {
 	
 	@Autowired
 	private final userRepository urepository;
-	
-	@Autowired
-	private final physicianRepository prepository;
-	
+		
 	@Autowired
 	private final symptomRepository srepository;
 	
@@ -66,7 +61,6 @@ public class prescriptionController {
 		this.repository = repository;
 		this.arepository = arepository;
 		this.urepository = urepository;
-		this.prepository = prepository;
 		this.srepository = srepository;
 		this.assembler = assembler;
 	}

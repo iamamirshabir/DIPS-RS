@@ -1,6 +1,5 @@
 package com.pioneer.dips.disease.model;
 
-import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -16,7 +15,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pioneer.dips.config.AuditModel;
 import com.pioneer.dips.diseasecategory.model.Diseasecategory;
-import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 
 @Entity
 @Table(name="disease")
@@ -64,6 +62,11 @@ public class Disease extends AuditModel {
 		this.disease_details = disease_details;
 		this.diseasecategory = diseasecategory;
 	}
+	
+
+	public Disease() {
+		super();
+	}
 
 	public long getDisease_id() {
 		return disease_id;
@@ -101,7 +104,7 @@ public class Disease extends AuditModel {
 		this.disease_details = disease_details;
 	}
 
-	@JsonIgnore
+	
 	public Diseasecategory getDiseasecategory() {
 		return diseasecategory;
 	}

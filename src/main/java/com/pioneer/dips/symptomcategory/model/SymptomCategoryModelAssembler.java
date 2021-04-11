@@ -8,7 +8,6 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import com.pioneer.dips.symptomcategory.controller.symptomCategoryController;
-import com.pioneer.dips.symptoms.controller.symptomController;
 
 @Component
 public class SymptomCategoryModelAssembler implements RepresentationModelAssembler<SymptomCategory, EntityModel<SymptomCategory>> {

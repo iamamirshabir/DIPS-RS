@@ -1,6 +1,5 @@
 package com.pioneer.dips.diseasecategory.model;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,14 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pioneer.dips.config.AuditModel;
 import com.pioneer.dips.disease.model.Disease;
-import com.pioneer.dips.symptomcategory.model.SymptomCategory;
 
 @Entity
 @Table(name="diseasecategory")
@@ -57,6 +54,12 @@ public class Diseasecategory extends AuditModel {
 			this.diseasecategory_title = diseasecategory_title;
 			this.disease = disease;
 	}
+	
+	
+
+	public Diseasecategory() {
+		super();
+	}
 
 	public long getDiseasecategory_id() {
 		return diseasecategory_id;
@@ -70,6 +73,7 @@ public class Diseasecategory extends AuditModel {
 		return diseasecategory_title;
 	}
 
+	@JsonIgnore
 	public List<Disease> getDisease() {
 		return disease;
 	}
