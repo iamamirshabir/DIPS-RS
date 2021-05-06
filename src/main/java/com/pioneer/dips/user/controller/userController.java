@@ -51,10 +51,10 @@ public class userController {
 	  }
 	  
 	  @CrossOrigin(origins = "http://localhost:8089") 
-	  @GetMapping("/filterByEmail/")
+	  @GetMapping("/keycloak/")
 	  public
-	  ResponseEntity<?> getByEmail(@RequestParam(name = "email") String email){
-		  Optional<User> optionalUser = repository.findByEmail(email);
+	  ResponseEntity<?> getByKeycloakID(@RequestParam(name="keycloak") String keycloak){
+		  Optional<User> optionalUser = repository.findByKeycloakID(keycloak);
 		  if (!optionalUser.isPresent()) {
 	            return ResponseEntity.unprocessableEntity().build();
 	        }
@@ -79,6 +79,7 @@ public class userController {
 		  return assembler.toModel(user);
 	  }
 	  
+	  @CrossOrigin(origins = "http://localhost:8089")
 	  @PutMapping("/{id}")
 	  ResponseEntity<?> replaceUser(@RequestBody User newUser, @PathVariable Long id) {
 		  User updatedUser = repository.findById(id)
@@ -87,6 +88,7 @@ public class userController {
 					  user.setUserac_dob(newUser.getUserac_dob());
 					  user.setUserac_mobile(newUser.getUserac_mobile());
 					  user.setUserac_email(newUser.getUserac_email());
+					  user.setUserac_reg(newUser.isUserac_reg());
 					  user.setUserac_keycloak_id(newUser.getUserac_keycloak_id());
 					  user.setUserac_keycloak_username(newUser.getUserac_keycloak_username());
 					  return repository.save(user);

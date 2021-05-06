@@ -12,8 +12,8 @@ import com.pioneer.dips.user.model.User;
 @Repository
 public interface userRepository extends JpaRepository<User, Long> {
 	
-	@Query(value = "SELECT * FROM userac WHERE userac.userac_email LIKE %:email% FETCH FIRST ROW ONLY", nativeQuery = true)
-	public Optional<User> findByEmail(@Param("email")String email);
+	@Query(value = "SELECT * FROM userac WHERE userac.userac_keycloak_id LIKE %:keycloak_id% FETCH FIRST ROW ONLY", nativeQuery = true)
+	public Optional<User> findByKeycloakID(@Param("keycloak_id")String keycloak_id);
 	
 
 }

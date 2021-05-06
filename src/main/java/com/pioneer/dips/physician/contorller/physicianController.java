@@ -44,7 +44,7 @@ public class physicianController {
 	  @GetMapping("/")
 	public
 	  CollectionModel<EntityModel<Physician>> all(){
-		  List<EntityModel<Physician>> physicians = repository.findAll().stream()
+		  List<EntityModel<Physician>> physicians = repository.findAllReg().stream()
 				  .map(assembler :: toModel)
 				  .collect(Collectors.toList());
 		  return CollectionModel.of(physicians,
@@ -52,10 +52,10 @@ public class physicianController {
 	  }
 	  
 	  @CrossOrigin(origins = "http://localhost:8089") 
-	  @GetMapping("/filterByEmail/")
+	  @GetMapping("/keycloak/")
 	  public
-	  ResponseEntity<?> getByEmail(@RequestParam(name = "email") String email){
-		  Optional<Physician> optionalPhysician = repository.findByEmail(email);
+	  ResponseEntity<?> getByKeycloakID(@RequestParam(name="keycloak") String keycloak_id){
+		  Optional<Physician> optionalPhysician = repository.findByKeycloakID(keycloak_id);
 		  if (!optionalPhysician.isPresent()) {
 	            return ResponseEntity.unprocessableEntity().build();
 	        }
@@ -89,6 +89,7 @@ public class physicianController {
 					  physician.setPhysician_address(newPhysician.getPhysician_address());
 					  physician.setPhysician_visit_days(newPhysician.getPhysician_visit_days());
 					  physician.setPhysician_time_start(newPhysician.getPhysician_time_start());
+					  physician.setPhysician_reg_status(newPhysician.isPhysician_reg_status());
 					  physician.setPhysician_time_end(newPhysician.getPhysician_time_end());
 					  physician.setPhysician_keycloak_id(newPhysician.getPhysician_keycloak_id());
 					  physician.setPhysician_keycloak_username(newPhysician.getPhysician_keycloak_username());

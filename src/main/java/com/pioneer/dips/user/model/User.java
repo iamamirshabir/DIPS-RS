@@ -44,9 +44,11 @@ public class User extends AuditModel {
 	@Column(name = "userac_email")
 	private String userac_email;
 	
+	@Column(name = "userac_reg")
+	private boolean userac_reg;
+	
 	@Column(name = "userac_keycloak_id")
 	private String userac_keycloak_id;	
-	
 	
 	@Column(name = "userac_keycloak_username")
 	private String userac_keycloak_username;	
@@ -72,21 +74,24 @@ public class User extends AuditModel {
 	  }
 
 	  
+	
+	
+
 	public User(long userac_id, String userac_name, Date userac_dob, String userac_mobile, String userac_email,
-			String userac_keycloak_id, String userac_keycloak_useracname, List<Prescription> prescription,
-			List<Appointment> appointment) {
+			boolean userac_reg, String userac_keycloak_id, String userac_keycloak_username,
+			List<Prescription> prescription, List<Appointment> appointment) {
 		super();
 		this.userac_id = userac_id;
 		this.userac_name = userac_name;
 		this.userac_dob = userac_dob;
 		this.userac_mobile = userac_mobile;
 		this.userac_email = userac_email;
+		this.userac_reg = userac_reg;
 		this.userac_keycloak_id = userac_keycloak_id;
-		this.userac_keycloak_username = userac_keycloak_useracname;
+		this.userac_keycloak_username = userac_keycloak_username;
 		this.prescription = prescription;
 		this.appointment = appointment;
 	}
-	
 
 	public User() {
 		super();
@@ -101,6 +106,16 @@ public class User extends AuditModel {
 	public void setPrescription(List<Prescription> prescription) {
 		this.prescription = prescription;
 	}
+	
+	
+	public boolean isUserac_reg() {
+		return userac_reg;
+	}
+
+	public void setUserac_reg(boolean userac_reg) {
+		this.userac_reg = userac_reg;
+	}
+
 	@JsonIgnore	
 	public List<Appointment> getAppointment() {
 		return appointment;

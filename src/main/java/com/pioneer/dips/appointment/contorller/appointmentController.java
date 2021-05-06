@@ -1,6 +1,8 @@
 package com.pioneer.dips.appointment.contorller;
 
+import java.time.Instant;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pioneer.dips.appointment.model.Appointment;
@@ -70,6 +73,23 @@ public class appointmentController {
 		  return CollectionModel.of(appointments,
 				  linkTo(methodOn(appointmentController.class).all()).withSelfRel());
 	  }
+	
+	@CrossOrigin(origins = "http://localhost:8089") 
+	  @GetMapping("physician/{pId}/getByDate/")
+	public
+	  CollectionModel<EntityModel<Appointment>> getByDate(@PathVariable Long pId, @RequestParam(name = "date") String date){
+		Optional<Physician> optionalPhysician = prepository.findById(pId);
+		 if (!optionalPhysician.isPresent()) {
+	            return CollectionModel.empty();
+	        }  
+		
+		List<EntityModel<Appointment>> appointments = repository.findByDate(Date.from(Instant.parse(date)), pId).stream()
+				  .map(assembler :: toModel)
+				  .collect(Collectors.toList());
+		  return 	CollectionModel.of(appointments,
+				  linkTo(methodOn(appointmentController.class).all()).withSelfRel());
+	  }
+	
 	@CrossOrigin(origins = "http://localhost:8089") 
 	  @PostMapping("/user/{uId}/physician/{pId}")
 	  ResponseEntity<?> newAppointment(@RequestBody Appointment newAppointment, @PathVariable Long uId, @PathVariable Long pId ) {

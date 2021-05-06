@@ -58,6 +58,9 @@ public class Physician extends AuditModel {
 	@Column(name = "physician_time_end")
 	private int physician_time_end;	
 
+	@Column(name = "physician_reg_status")
+	private boolean physician_reg_status;	
+	
 	@Column(name = "physician_keycloak_id")
 	private String physician_keycloak_id;	
 
@@ -91,11 +94,12 @@ public class Physician extends AuditModel {
 
 
 
+
 	public Physician(long physician_id, String physician_name, String physician_email, String physician_spec,
 			String physician_address, int physician_max_daily, String physician_visit_days,
 			String physician_availability, int physician_time_start, int physician_time_end,
-			String physician_keycloak_id, String physician_keycloak_username, List<Prescription> prescription,
-			List<Appointment> appointment) {
+			boolean physician_reg_status, String physician_keycloak_id, String physician_keycloak_username,
+			List<Prescription> prescription, List<Appointment> appointment) {
 		super();
 		this.physician_id = physician_id;
 		this.physician_name = physician_name;
@@ -107,6 +111,7 @@ public class Physician extends AuditModel {
 		this.physician_availability = physician_availability;
 		this.physician_time_start = physician_time_start;
 		this.physician_time_end = physician_time_end;
+		this.physician_reg_status = physician_reg_status;
 		this.physician_keycloak_id = physician_keycloak_id;
 		this.physician_keycloak_username = physician_keycloak_username;
 		this.prescription = prescription;
@@ -118,6 +123,14 @@ public class Physician extends AuditModel {
 	}	
 	
 	
+	public boolean isPhysician_reg_status() {
+		return physician_reg_status;
+	}
+
+	public void setPhysician_reg_status(boolean physician_reg_status) {
+		this.physician_reg_status = physician_reg_status;
+	}
+
 	public int getPhysician_max_daily() {
 		return physician_max_daily;
 	}
