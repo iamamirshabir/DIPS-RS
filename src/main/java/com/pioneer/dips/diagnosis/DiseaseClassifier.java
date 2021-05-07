@@ -27,6 +27,8 @@ public class DiseaseClassifier {
 		structure.setClassIndex(0);
 		nbu.buildClassifier(structure);
 		System.out.println("Attributes # "+ structure.numAttributes()+",Instances #"+ structure.numInstances());
+		//not in casual
+		//evaluate(nbu);
 		return nbu;
 	}
 	public DiagnosisResult classify(NaiveBayesUpdateable nbu, String token) throws Exception {

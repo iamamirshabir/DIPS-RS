@@ -39,7 +39,7 @@ public class userController {
 		    this.repository = repository;
 		    this.assembler = assembler;
 		  }
-	  @CrossOrigin(origins = "http://localhost:8089") 
+
 	  @GetMapping("/")
 	  public
 	  CollectionModel<EntityModel<User>> all(){
@@ -61,7 +61,6 @@ public class userController {
 		  return ResponseEntity.ok().body(assembler.toModel(optionalUser.get()));
 	   }
 	  
-	  @CrossOrigin(origins = "http://localhost:8089") 
 	  @PostMapping("/")
 	  ResponseEntity<?> newUser(@RequestBody User newUser ) {
 		EntityModel<User> user = assembler.toModel(repository.save(newUser));
