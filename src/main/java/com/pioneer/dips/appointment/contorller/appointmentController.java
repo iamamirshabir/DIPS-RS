@@ -75,9 +75,9 @@ public class appointmentController {
 	  }
 	
 	@CrossOrigin(origins = "http://localhost:8089") 
-	  @GetMapping("physician/{pId}/getByDate/")
+	  @PostMapping("physician/{pId}/getByDate/")
 	public
-	  CollectionModel<EntityModel<Appointment>> getByDate(@PathVariable Long pId, @RequestParam(name = "date") String date){
+	  CollectionModel<EntityModel<Appointment>> getByDate(@PathVariable Long pId, @RequestBody String date){
 		Optional<Physician> optionalPhysician = prepository.findById(pId);
 		 if (!optionalPhysician.isPresent()) {
 	            return CollectionModel.empty();

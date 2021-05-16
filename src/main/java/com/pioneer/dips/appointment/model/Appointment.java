@@ -39,11 +39,11 @@ public class Appointment extends AuditModel {
     @OneToOne(mappedBy = "appointment")
     private Prescription prescription;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
 	@JoinColumn(name = "userac_id")
 	private User userac;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "physician_id")
     private Physician physician;
 	

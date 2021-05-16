@@ -23,6 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**").allowedOrigins("https://dips-p.web.app");
+
+				registry.addMapping("/**").allowedOrigins("https://localhost:8089/");
 			}
 		};
 	}
