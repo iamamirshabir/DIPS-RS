@@ -30,16 +30,16 @@ import com.pioneer.dips.user.repository.userRepository;
 @RestController
 @RequestMapping(value = "/api/users")
 public class userController {
-	
+
 	@Autowired
-	private final userRepository repository;	
-	private final UserModelAssembler assembler; 
-	
+	private final userRepository repository;
+	private final UserModelAssembler assembler;
+
 	  userController(userRepository repository, UserModelAssembler assembler) {
 		    this.repository = repository;
 		    this.assembler = assembler;
 		  }
-
+@CrossOrigin(origins = "http://localhost:8089")
 	  @GetMapping("/")
 	  public
 	  CollectionModel<EntityModel<User>> all(){
@@ -49,8 +49,8 @@ public class userController {
 		  return CollectionModel.of(users,
 				  linkTo(methodOn(userController.class).all()).withSelfRel());
 	  }
-	  
-	  @CrossOrigin(origins = "http://localhost:8089") 
+
+	  @CrossOrigin(origins = "http://localhost:8089")
 	  @GetMapping("/keycloak/")
 	  public
 	  ResponseEntity<?> getByKeycloakID(@RequestParam(name="keycloak") String keycloak){
@@ -60,7 +60,8 @@ public class userController {
 	        }
 		  return ResponseEntity.ok().body(assembler.toModel(optionalUser.get()));
 	   }
-	  
+
+	  @CrossOrigin(origins = "http://localhost:8089")
 	  @PostMapping("/")
 	  ResponseEntity<?> newUser(@RequestBody User newUser ) {
 		EntityModel<User> user = assembler.toModel(repository.save(newUser));
@@ -68,7 +69,7 @@ public class userController {
 				  .created(user.getRequiredLink(IanaLinkRelations.SELF).toUri())
 				  .body(user);
 	  }
-	  
+
 	  @CrossOrigin(origins = "http://localhost:8089")
 	  @GetMapping("/{id}")
 	public
@@ -77,7 +78,7 @@ public class userController {
 				  .orElseThrow(() -> new UserNotFoundException(id));
 		  return assembler.toModel(user);
 	  }
-	  
+
 	  @CrossOrigin(origins = "http://localhost:8089")
 	  @PutMapping("/{id}")
 	  ResponseEntity<?> replaceUser(@RequestBody User newUser, @PathVariable Long id) {
@@ -97,17 +98,17 @@ public class userController {
 					  return repository.save(newUser);
 				  });
 		  EntityModel<User> users = assembler.toModel(updatedUser);
-		  
+
 		  return ResponseEntity
 				  .created(users.getRequiredLink(IanaLinkRelations.SELF).toUri())
 				  .body(users);
-					 
+
 	  }
-	  
+
 	  @DeleteMapping("/{id}")
 	  void deleteUser(@PathVariable Long id) {
 	    repository.deleteById(id);
 	  }
-	  
+
 
 }
