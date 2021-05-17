@@ -14,15 +14,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
-        
+
     }
-    
+
     @Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("https://dips-p.web.app");
+				registry.addMapping("/**").allowedOrigins("https://dips-p.web.app/");
 
 				registry.addMapping("/**").allowedOrigins("https://localhost:8089/");
 			}
