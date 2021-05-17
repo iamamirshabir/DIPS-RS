@@ -3,7 +3,7 @@ package com.pioneer.dips.appointment.model;
 import java.util.Date;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

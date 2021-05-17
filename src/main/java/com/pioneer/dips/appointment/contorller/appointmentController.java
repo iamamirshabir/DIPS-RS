@@ -1,6 +1,8 @@
 package com.pioneer.dips.appointment.contorller;
 
-import java.time.Instant;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +27,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pioneer.dips.appointment.model.Appointment;
@@ -77,13 +78,22 @@ public class appointmentController {
 	@CrossOrigin(origins = "http://localhost:8089") 
 	  @PostMapping("physician/{pId}/getByDate/")
 	public
-	  CollectionModel<EntityModel<Appointment>> getByDate(@PathVariable Long pId, @RequestBody String date){
+	  CollectionModel<EntityModel<Appointment>> getByDate(@PathVariable Long pId, @RequestBody Date token) throws ParseException{
 		Optional<Physician> optionalPhysician = prepository.findById(pId);
 		 if (!optionalPhysician.isPresent()) {
 	            return CollectionModel.empty();
 	        }  
-		
-		List<EntityModel<Appointment>> appointments = repository.findByDate(Date.from(Instant.parse(date)), pId).stream()
+		//SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+		//Date date;
+		//date = format.parse(token);
+		//Optional<Appointment> a = repository.findById((long) 6);
+		//if(!a.isPresent()) {
+		//	return CollectionModel.empty();
+		//}
+		//System.out.println(a.get().getAppointment_on());
+		//String temp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(date);
+		System.out.println(token);
+		List<EntityModel<Appointment>> appointments = repository.findByDate(token, pId).stream()
 				  .map(assembler :: toModel)
 				  .collect(Collectors.toList());
 		  return 	CollectionModel.of(appointments,

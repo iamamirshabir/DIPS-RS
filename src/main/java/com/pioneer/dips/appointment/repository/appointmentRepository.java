@@ -16,6 +16,9 @@ public interface appointmentRepository extends JpaRepository<Appointment, Long> 
 	@Query(value = "SELECT * FROM appointment WHERE appointment.appointment_on = :date AND appointment.physician_id = :pid", nativeQuery = true)
 	public List<Appointment> findByDate(@Param("date")Date date, @Param("pid")Long pid );
 	
+	@Query(value = "SELECT * FROM appointment WHERE appointment.appointment_on = :date AND appointment.physician_id = :pid", nativeQuery = true)
+	public List<Appointment> findByDate(@Param("date")String date, @Param("pid")Long pid );
+	
 	@Query(value = "SELECT * FROM appointment WHERE appointment.userac_id = :id", nativeQuery = true)
 	public List<Appointment> findByUser(@Param("id")Long id);
 
