@@ -22,9 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("https://dips-p.web.app/");
-
-				registry.addMapping("/**").allowedOrigins("https://localhost:8089/");
+				registry.addMapping("/**").allowedOrigins("https://dips-p.web.app/","https://localhost:8089/");
 			}
 		};
 	}
