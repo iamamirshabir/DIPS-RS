@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pioneer.dips.appointment.model.Appointment;
 import com.pioneer.dips.appointment.repository.appointmentRepository;
+import com.pioneer.dips.medicine.repository.medicineRepository;
 import com.pioneer.dips.physician.repository.physicianRepository;
 import com.pioneer.dips.prescription.model.Prescription;
 import com.pioneer.dips.prescription.model.PrescriptionModelAssembler;
@@ -42,6 +43,12 @@ public class prescriptionController {
 	private final prescriptionRepository repository;
 	
 	@Autowired
+	private final symptomRepository syrepository;
+	
+	@Autowired
+	private final medicineRepository mrepository;
+	
+	@Autowired
 	private final appointmentRepository arepository;
 	
 	@Autowired
@@ -54,17 +61,20 @@ public class prescriptionController {
 	
 	
 	  
-	public prescriptionController(prescriptionRepository repository, appointmentRepository arepository,
-			userRepository urepository, physicianRepository prepository, symptomRepository srepository,
-			PrescriptionModelAssembler assembler) {
+	
+
+	public prescriptionController(prescriptionRepository repository, symptomRepository syrepository,
+			medicineRepository mrepository, appointmentRepository arepository, userRepository urepository,
+			symptomRepository srepository, PrescriptionModelAssembler assembler) {
 		super();
 		this.repository = repository;
+		this.syrepository = syrepository;
+		this.mrepository = mrepository;
 		this.arepository = arepository;
 		this.urepository = urepository;
 		this.srepository = srepository;
 		this.assembler = assembler;
 	}
-
 	@CrossOrigin(origins = "http://localhost:8089") 
 	  @GetMapping("/")
 	public
@@ -98,6 +108,8 @@ public class prescriptionController {
 		        }
 			 newPrescription.setAppointment(optionalAppointment.get());
 			 newPrescription.setUser(optionalAppointment.get().getUser());
+			 newPrescription.getSymptom().forEach(s -> syrepository.save(s));
+			 newPrescription.getMedicine().forEach(m -> mrepository.save(m));
 			 newPrescription.setPhysician(optionalAppointment.get().getPhysician());
 			EntityModel<Prescription> prescription = assembler.toModel(repository.save(newPrescription));
 		  return ResponseEntity
@@ -149,7 +161,7 @@ public class prescriptionController {
 						            return ResponseEntity.unprocessableEntity().build();
 						        }  
 							 symptoms.add(optionalSymptom.get());
-							 optionalSymptom.get().addPrescription(updatedPrescription);							  
+							// optionalSymptom.get().addPrescription(updatedPrescription);							  
 					  }
 					  updatedPrescription.setSymptom(symptoms);
 					  repository.save(updatedPrescription);

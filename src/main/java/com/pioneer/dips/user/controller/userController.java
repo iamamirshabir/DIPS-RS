@@ -39,7 +39,7 @@ public class userController {
 		    this.repository = repository;
 		    this.assembler = assembler;
 		  }
-@CrossOrigin(origins = "http://localhost:8089")
+	  @CrossOrigin(origins = "http://localhost:8089")
 	  @GetMapping("/")
 	  public
 	  CollectionModel<EntityModel<User>> all(){

@@ -63,7 +63,7 @@ public class medicineController {
 			 if (!optionalPrescription.isPresent()) {
 		            return ResponseEntity.unprocessableEntity().build();
 		        }
-			 newMedicine.addPrescription(optionalPrescription.get());
+			// newMedicine.addPrescription(optionalPrescription.get());
 			 optionalPrescription.get().addMedicine(newMedicine);
 			 
 		  EntityModel<Medicine> medicine = assembler.toModel(repository.save(newMedicine));

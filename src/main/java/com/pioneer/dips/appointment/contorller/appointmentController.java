@@ -1,8 +1,6 @@
 package com.pioneer.dips.appointment.contorller;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,8 +34,6 @@ import com.pioneer.dips.physician.model.Physician;
 import com.pioneer.dips.physician.repository.physicianRepository;
 import com.pioneer.dips.user.model.User;
 import com.pioneer.dips.user.repository.userRepository;
-
-
 
 @RestController
 @RequestMapping(value = "/api/appointments")

@@ -41,11 +41,9 @@ public class Symptom extends AuditModel {
     @JoinColumn(name="symptomcategory_id")
     private SymptomCategory symptomcategory;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "symptom_prescription", 
-      joinColumns = @JoinColumn(name = "symptom_id"), 
-      inverseJoinColumns = @JoinColumn(name = "prescription_id"))
-    private List<Prescription> prescription;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "prescription_id")
+    private Prescription prescription;
 	
 	public Symptom() {
 		
@@ -58,12 +56,10 @@ public class Symptom extends AuditModel {
 		this.symptomcategory = symptomcategory;
 	}
 	
-	public void addPrescription(Prescription p) {
-		if(prescription == null) {
-			prescription = new  ArrayList<Prescription>();
-		}
-		prescription.add(p);
-	}
+	/*
+	 * public void addPrescription(Prescription p) { if(prescription == null) {
+	 * prescription = new ArrayList<Prescription>(); } prescription.add(p); }
+	 */
 
 	public SymptomCategory getSymptomcategory() {
 		return symptomcategory;
@@ -74,11 +70,11 @@ public class Symptom extends AuditModel {
 	}
 
 	@JsonIgnore
-	public List<Prescription> getPrescription() {
+	public Prescription getPrescription() {
 		return prescription;
 	}
 
-	public void setPrescription(List<Prescription> prescription) {
+	public void setPrescription(Prescription prescription) {
 		this.prescription = prescription;
 	}
 

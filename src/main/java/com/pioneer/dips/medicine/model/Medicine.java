@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -45,11 +46,9 @@ public class Medicine extends AuditModel {
 	@Column(name = "medicine_dosage")
 	private int medicine_dosage;	
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "medicine_prescription", 
-      joinColumns = @JoinColumn(name = "medicine_id"), 
-      inverseJoinColumns = @JoinColumn(name = "prescription_id"))
-    private List<Prescription> prescription= new ArrayList <Prescription>();
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "prescription_id")
+    private Prescription prescription;
 	
 	
 		@Override
@@ -70,7 +69,6 @@ public class Medicine extends AuditModel {
 		this.medicine_composition = medicine_composition;
 		this.medicine_frequency = medicine_frequency;
 		this.medicine_dosage = medicine_dosage;
-		this.prescription = prescription;
 	}
 	
 	
@@ -78,19 +76,17 @@ public class Medicine extends AuditModel {
 		super();
 	}
 
-	public void addPrescription(Prescription p) {
-		if(prescription == null) {
-			prescription = new ArrayList<Prescription>();
-		}
-		this.prescription.add(p);
-	}
+	/*
+	 * public void addPrescription(Prescription p) { if(prescription == null) {
+	 * prescription = new ArrayList<Prescription>(); } this.prescription.add(p); }
+	 */
 
 	@JsonIgnore
-	public List<Prescription> getPrescription() {
+	public Prescription getPrescription() {
 		return prescription;
 	}
 
-	public void setPrescription(List<Prescription> prescription) {
+	public void setPrescription(Prescription prescription) {
 		this.prescription = prescription;
 	}
 

@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -48,17 +49,26 @@ public class Prescription extends AuditModel {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@Column(name = "prescription_medicines")
+	private String prescription_medicines;	
+	
+	@Column(name = "prescription_symptoms")
+	private String prescription_symptoms;	
+	
+	
+	@ManyToOne
 	@JoinColumn(name = "userac_id")
 	private User userac;
 	
-	@ManyToMany(mappedBy = "prescription", cascade = { CascadeType.ALL })
-    private List<Symptom> symptom;
+	@OneToMany(mappedBy = "prescription", cascade = {
+	        CascadeType.PERSIST
+	    })private List<Symptom> symptom;
 		
-	@ManyToMany(mappedBy = "prescription", cascade = { CascadeType.ALL })
-    private List<Medicine> medicine;
+	@OneToMany(mappedBy = "prescription", cascade = {
+	        CascadeType.PERSIST
+	    })private List<Medicine> medicine;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
     @JoinColumn(name = "physician_id")
     private Physician physician;
 	
