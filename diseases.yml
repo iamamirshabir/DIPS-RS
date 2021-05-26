@@ -1,17 +1,3 @@
-server: 
-  port: 8081
-  servlet: 
-    context-path: /resource-server
-
-spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://dips-as.herokuapp.com/auth/realms/DIPS/
-          jwk-set-uri: https://dips-as.herokuapp.com/auth/realms/DIPS/protocol/openid-connect/certs
-          
-          
 static:
   diseases:
     - disease_id: 0  
@@ -93,7 +79,7 @@ static:
       disease_name: "Bad Breath (Halitosis)"
       disease_details: "The most common cause of halitosis is bad oral hygiene. If particles of food are left in the mouth, their breakdown by bacteria produces sulfur compounds. Keeping the mouth hydrated can reduce mouth odor. The best treatment for bad breath is regular brushing, flossing, and hydration. "
     - disease_id: 26
-      disease_name: "Bell's Palsy"
+      disease_name: "Bell s Palsy"
       disease_details: "Bells palsy is an unexplained episode of facial muscle weakness or paralysis. It begins suddenly and worsens over 48 hours. This condition results from damage to the facial nerve (the 7th cranial nerve). Pain and discomfort usually occur on one side of the face or head. "
     - disease_id: 27
       disease_name: "Beriberi"
@@ -246,7 +232,7 @@ static:
       disease_name: "Diphtheria"
       disease_details: "Diphtheria is a serious infection caused by strains of bacteria called Corynebacterium diphtheriae that make toxin (poison). It can lead to difficulty breathing, heart failure, paralysis, and even death. CDC recommends vaccines for infants, children, teens, and adults to prevent diphtheria. "
     - disease_id: 77
-      disease_name: "Down's Syndrome"
+      disease_name: "Down s Syndrome"
       disease_details: "Down syndrome or Downs syndrome, also known as trisomy 21, is a genetic disorder caused by the presence of all or part of a third copy of chromosome 21. It is usually associated with physical growth delays, mild to moderate intellectual disability, and characteristic facial features. "
     - disease_id: 78
       disease_name: "Dracunculiasis (guinea-worm disease)"
@@ -549,7 +535,7 @@ static:
       disease_name: "Paratyphoid fever"
       disease_details: "Paratyphoid fever, also known simply as paratyphoid:  is a bacterial infection caused by one of the three types of Salmonella enterica. Symptoms usually begin 6–30 days after exposure and are the same as those of typhoid fever. Often, a gradual onset of a high fever occurs over several days. "
     - disease_id: 178
-      disease_name: "Parkinson's Disease"
+      disease_name: "Parkinson s Disease"
       disease_details: "Parkinsons disease is a brain disorder that leads to shaking, stiffness, and difficulty with walking, balance, and coordination. Parkinsons symptoms usually begin gradually and get worse over time. As the disease progresses, people may have difficulty walking and talking. "
     - disease_id: 179
       disease_name: "Pelvic inflammatory disease"
@@ -621,7 +607,7 @@ static:
       disease_name: "Rabies"
       disease_details: "Rabies is a deadly virus spread to people from the saliva of infected animals. The rabies virus is usually transmitted through a bite. Animals most likely to transmit rabies in the United States include bats, coyotes, foxes, raccoons and skunks. "
     - disease_id: 202
-      disease_name: "Raynaud's Phenomenon"
+      disease_name: "Raynaud s Phenomenon"
       disease_details: "Raynauds phenomenon is a disorder that causes decreased blood flow to the fingers. In some cases, it also causes less blood flow to the ears, toes, nipples, knees, or nose. Spasms of blood vessels happen in response to cold, stress, or emotional upset. "
     - disease_id: 203
       disease_name: "Repetitive strain injury"
@@ -799,4 +785,4 @@ static:
       disease_details: "People with lactose intolerance are unable to fully digest the sugar (lactose) in milk. As a result, they have diarrhea, gas and bloating after eating or drinking dairy products. The condition, which is also called lactose malabsorption, is usually harmless, but its symptoms can be uncomfortable. "
     - disease_id: 261
       disease_name: "papilloedema"
-      disease_details: "Papilledema is a condition in which increased pressure in or around the brain causes the part of the optic nerve inside the eye to swell. Symptoms may be fleeting disturbances in vision, headache, vomiting, or a combination. Doctors make the diagnosis by looking in the persons eye with an ophthalmoscope. "          
+      disease_details: "Papilledema is a condition in which increased pressure in or around the brain causes the part of the optic nerve inside the eye to swell. Symptoms may be fleeting disturbances in vision, headache, vomiting, or a combination. Doctors make the diagnosis by looking in the persons eye with an ophthalmoscope. "

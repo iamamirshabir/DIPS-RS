@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pioneer.dips.disease.model.Disease;
 import com.pioneer.dips.disease.model.DiseaseModelAssembler;
+import com.pioneer.dips.disease.model.DiseaseProperties;
+import com.pioneer.dips.disease.model.DiseaseStatic;
 import com.pioneer.dips.disease.repository.diseaseRepository;
 import com.pioneer.dips.diseasecategory.model.Diseasecategory;
 import com.pioneer.dips.diseasecategory.repository.diseasecategoryRepository;
@@ -36,15 +38,18 @@ public class diseaseController {
 	@Autowired
 	private final diseaseRepository repository;	
 	
+	private final DiseaseProperties diseaseP;
+	
 	@Autowired
 	private final diseasecategoryRepository dcrepository;	
 	private final DiseaseModelAssembler assembler; 
 	
 
 	  public diseaseController(diseaseRepository repository, diseasecategoryRepository dcrepository,
-			DiseaseModelAssembler assembler) {
+			DiseaseModelAssembler assembler, DiseaseProperties dp) {
 		super();
 		this.repository = repository;
+		this.diseaseP = dp;
 		this.dcrepository = dcrepository;
 		this.assembler = assembler;
 	}
@@ -58,6 +63,29 @@ public class diseaseController {
 				  .collect(Collectors.toList());
 		  return CollectionModel.of(diseases,
 				  linkTo(methodOn(diseaseController.class).all()).withSelfRel());
+	  }
+	
+	@CrossOrigin(origins = "http://localhost:8089") 
+	@GetMapping("/static/")
+	public
+	  CollectionModel<EntityModel<DiseaseStatic>> allStatic(){
+		  List<EntityModel<DiseaseStatic>> diseases = diseaseP.getDiseases().stream()
+				  .map(assembler :: toModel)
+				  .collect(Collectors.toList());
+		  System.out.println(diseaseP.getDiseases().size());
+		  return CollectionModel.of(diseases,
+				  linkTo(methodOn(diseaseController.class).all()).withSelfRel());
+	  }
+	
+	@CrossOrigin(origins = "http://localhost:8089") 
+	@PostMapping("/staticByName/")
+	public
+	  EntityModel<DiseaseStatic> allStaticByName(@RequestBody String name){
+		DiseaseStatic d = diseaseP.getDiseases().stream()
+				  .filter(disease -> name.equals(disease.getDisease_name()))
+				  .findAny()
+				  .orElseThrow(() -> new DiseaseNotFoundException(name));  
+		  return assembler.toModel(d);
 	  }
 	
 	@CrossOrigin(origins = "http://localhost:8089") 

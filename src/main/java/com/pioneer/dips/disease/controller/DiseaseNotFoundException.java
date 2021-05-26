@@ -10,4 +10,7 @@ public class DiseaseNotFoundException extends RuntimeException {
 	public DiseaseNotFoundException(Long id){
 		super("Could not find disease" + id);
 	}
+	public DiseaseNotFoundException(String name){
+		super("Could not find disease " + name);
+	}
 }

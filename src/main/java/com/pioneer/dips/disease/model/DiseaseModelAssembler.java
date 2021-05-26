@@ -21,4 +21,11 @@ public class DiseaseModelAssembler implements RepresentationModelAssembler<Disea
 				linkTo(methodOn(diseaseController.class).one(disease.getDisease_id())).withSelfRel(),
 				linkTo(methodOn(diseaseController.class).all()).withRel("disease"));
 	}
+	
+	public EntityModel<DiseaseStatic> toModel (DiseaseStatic disease){
+	
+		return EntityModel.of(disease, 
+				linkTo(methodOn(diseaseController.class).allStaticByName(disease.getDisease_id())).withSelfRel(),
+				linkTo(methodOn(diseaseController.class).allStatic()).withRel("disease"));
+	}
 }
