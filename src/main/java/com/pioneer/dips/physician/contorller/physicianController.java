@@ -89,7 +89,7 @@ public class physicianController {
 				  .orElseThrow(() -> new PhysicianNotFoundException(id));
 		  return assembler.toModel(physician);
 	  }
-	  
+	  @CrossOrigin(origins = "http://localhost:8089")
 	  @PutMapping("/{id}")
 	  ResponseEntity<?> replacePhysician(@RequestBody Physician newPhysician, @PathVariable Long id) {
 		  Physician updatedPhysician = repository.findById(id)
@@ -101,6 +101,7 @@ public class physicianController {
 					  physician.setPhysician_visit_days(newPhysician.getPhysician_visit_days());
 					  physician.setPhysician_time_start(newPhysician.getPhysician_time_start());
 					  physician.setPhysician_reg_status(newPhysician.isPhysician_reg_status());
+					  physician.setPhysician_reg_no(newPhysician.getPhysician_reg_no());
 					  physician.setPhysician_time_end(newPhysician.getPhysician_time_end());
 					  physician.setPhysician_keycloak_id(newPhysician.getPhysician_keycloak_id());
 					  physician.setPhysician_keycloak_username(newPhysician.getPhysician_keycloak_username());

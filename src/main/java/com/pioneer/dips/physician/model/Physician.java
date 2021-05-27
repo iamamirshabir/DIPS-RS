@@ -22,51 +22,54 @@ import com.pioneer.dips.prescription.model.Prescription;
 public class Physician extends AuditModel {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -2595048583772454461L;
 
-	@Id 
-	@GeneratedValue(strategy = GenerationType.AUTO)	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "physician_id")
 	private long physician_id;
-	
+
 	@Column(name = "physician_name")
-	private String physician_name;	
-	
+	private String physician_name;
+
 	@Column(name = "physician_email")
-	private String physician_email;	
-	
+	private String physician_email;
+
 	@Column(name = "physician_spec")
-	private String physician_spec;	
+	private String physician_spec;
 
 	@Column(name = "physician_address")
-	private String physician_address;	
+	private String physician_address;
 
 	@Column(name = "physician_max_daily")
 	private int physician_max_daily;
-	
+
 	@Column(name = "physician_visit_days")
-	private String physician_visit_days;	
-	
+	private String physician_visit_days;
+
 	@Column(name = "physician_availability")
 	private String physician_availability;
 
+	@Column(name = "physician_reg_no")
+	private String physician_reg_no;
+	
 	@Column(name = "physician_time_start")
-	private int physician_time_start;	
+	private int physician_time_start;
 
 	@Column(name = "physician_time_end")
-	private int physician_time_end;	
+	private int physician_time_end;
 
 	@Column(name = "physician_reg_status")
-	private boolean physician_reg_status;	
-	
+	private boolean physician_reg_status;
+
 	@Column(name = "physician_keycloak_id")
-	private String physician_keycloak_id;	
+	private String physician_keycloak_id;
 
 	@Column(name = "physician_keycloak_username")
 	private String physician_keycloak_username;
-	
+
 	@OneToMany(mappedBy = "physician", cascade = {
 	        CascadeType.ALL
 	    })
@@ -75,8 +78,8 @@ public class Physician extends AuditModel {
 	        CascadeType.ALL
 	    })
 	    private List < Appointment > appointment;
-	
-	
+
+
 		@Override
 	  public int hashCode() {
 	    return Objects.hash(this.physician_id, this.physician_spec, this.physician_address, this.physician_visit_days, this.physician_time_start, this.physician_time_end, this.physician_keycloak_id, this.physician_keycloak_username );
@@ -88,8 +91,10 @@ public class Physician extends AuditModel {
 	  }
 
 
-	
-	
+
+
+
+
 
 
 
@@ -97,7 +102,7 @@ public class Physician extends AuditModel {
 
 	public Physician(long physician_id, String physician_name, String physician_email, String physician_spec,
 			String physician_address, int physician_max_daily, String physician_visit_days,
-			String physician_availability, int physician_time_start, int physician_time_end,
+			String physician_availability, String physician_reg_no, int physician_time_start, int physician_time_end,
 			boolean physician_reg_status, String physician_keycloak_id, String physician_keycloak_username,
 			List<Prescription> prescription, List<Appointment> appointment) {
 		super();
@@ -109,6 +114,7 @@ public class Physician extends AuditModel {
 		this.physician_max_daily = physician_max_daily;
 		this.physician_visit_days = physician_visit_days;
 		this.physician_availability = physician_availability;
+		this.physician_reg_no = physician_reg_no;
 		this.physician_time_start = physician_time_start;
 		this.physician_time_end = physician_time_end;
 		this.physician_reg_status = physician_reg_status;
@@ -120,9 +126,9 @@ public class Physician extends AuditModel {
 
 	public Physician() {
 		super();
-	}	
-	
-	
+	}
+
+
 	public boolean isPhysician_reg_status() {
 		return physician_reg_status;
 	}
@@ -147,6 +153,14 @@ public class Physician extends AuditModel {
 		this.physician_availability = physician_availability;
 	}
 
+	public String getPhysician_reg_no() {
+		return physician_reg_no;
+	}
+
+	public void setPhysician_reg_no(String physician_reg_no) {
+		this.physician_reg_no = physician_reg_no;
+	}
+
 	public String getPhysician_email() {
 		return physician_email;
 	}
@@ -155,7 +169,7 @@ public class Physician extends AuditModel {
 		this.physician_email = physician_email;
 	}
 
-	@JsonIgnore	
+	@JsonIgnore
 	public List<Prescription> getPrescription() {
 		return prescription;
 	}
@@ -163,8 +177,8 @@ public class Physician extends AuditModel {
 	public void setPrescription(List<Prescription> prescription) {
 		this.prescription = prescription;
 	}
-	
-	@JsonIgnore	
+
+	@JsonIgnore
 	public List<Appointment> getAppointment() {
 		return appointment;
 	}
@@ -248,6 +262,6 @@ public class Physician extends AuditModel {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	  
+
 }
 
