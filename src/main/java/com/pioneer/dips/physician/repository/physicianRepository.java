@@ -19,4 +19,7 @@ public interface physicianRepository extends JpaRepository<Physician, Long> {
 	@Query(value = "SELECT * FROM physician WHERE physician.physician_reg_status = true", nativeQuery = true)
 	public List<Physician> findAllReg();
 	
+	@Query(value = "SELECT * FROM physician WHERE physician.physician_reg_status = false", nativeQuery = true)
+	public List<Physician> findAllNotReg();
+	
 }

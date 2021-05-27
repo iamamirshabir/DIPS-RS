@@ -52,6 +52,17 @@ public class physicianController {
 	  }
 	  
 	  @CrossOrigin(origins = "http://localhost:8089") 
+	  @GetMapping("/unregistered/")
+	public
+	  CollectionModel<EntityModel<Physician>> allNotReg(){
+		  List<EntityModel<Physician>> physicians = repository.findAllNotReg().stream()
+				  .map(assembler :: toModel)
+				  .collect(Collectors.toList());
+		  return CollectionModel.of(physicians,
+				  linkTo(methodOn(physicianController.class).all()).withSelfRel());
+	  }
+	  
+	  @CrossOrigin(origins = "http://localhost:8089") 
 	  @GetMapping("/keycloak/")
 	  public
 	  ResponseEntity<?> getByKeycloakID(@RequestParam(name="keycloak") String keycloak_id){
