@@ -37,8 +37,8 @@ public class DiseaseClassifier {
                .toArray();
 		Instance test = new DenseInstance(structure.instance(0));
 		//problem with index starting from 1
-		for (int i=0; i <=structure.numAttributes();i++) {
-			test.setValue(i, arr[i]);
+		for (int i=1; i <structure.numAttributes();i++) {
+			test.setValue(i-1, arr[i-1]);
 			};
 			structure.add(test);
 			//double instClass = nbm.classifyInstance(str.instance(str.numInstances()-1));
