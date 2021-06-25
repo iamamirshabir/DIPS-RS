@@ -13,15 +13,15 @@ import weka.core.converters.ConverterUtils.DataSource;
 
 @Component
 public class DiseaseClassifier {
-	
+
 		static Instances structure;
 
 	public Instances loadData(String filepath) throws Exception {
 		DataSource source = new DataSource(filepath);
-		structure = source.getDataSet();		
+		structure = source.getDataSet();
 		return structure;
 	}
-	
+
 	public NaiveBayesUpdateable buildClassifier(NaiveBayesUpdateable nbu, String file) throws Exception {
 		loadData(file);
 		structure.setClassIndex(0);
@@ -36,16 +36,17 @@ public class DiseaseClassifier {
                 .mapToDouble (Double::parseDouble)
                .toArray();
 		Instance test = new DenseInstance(structure.instance(0));
-		for (int i=1; i <structure.numAttributes();i++) {
-			test.setValue(i, arr[i-1]);
+		//problem with index starting from 1
+		for (int i=0; i <=structure.numAttributes();i++) {
+			test.setValue(i, arr[i]);
 			};
-			structure.add(test);		
+			structure.add(test);
 			//double instClass = nbm.classifyInstance(str.instance(str.numInstances()-1));
 			double[] probClasses = nbu.distributionForInstance(structure.instance(structure.numInstances()-1));
 			String[] diseases = new String[3];
 			int[] indexOfDiseases = new int[3];
 			double[] nbProb =new double[3];
-			nbProb[0]=nbProb[1]=nbProb[2]= 0.0; 
+			nbProb[0]=nbProb[1]=nbProb[2]= 0.0;
 			for(int i=0;i< probClasses.length;i++) {
 				if(probClasses[i]> nbProb[0]) {
 					nbProb[2] = nbProb[1];
@@ -64,16 +65,16 @@ public class DiseaseClassifier {
 				}
 			}
 			for(int i=0 ; i<3 ; i++ ) {
-				diseases[i]= structure.attribute(0).value(indexOfDiseases[i]);	
+				diseases[i]= structure.attribute(0).value(indexOfDiseases[i]);
 			}
 			DiagnosisResult diagnosisResult = new DiagnosisResult();
 			diagnosisResult.setPotentialDiseases(diseases);
 			diagnosisResult.setDiseaseProb(nbProb);
 			diagnosisResult.setInstanceString(test.toString());
 			diagnosisResult.setClassIndex(indexOfDiseases[0]);
-			
+
 			//testing evironment
-			
+
 			//System.out.println("=======================================================");
 			//System.out.println("===<< R E S U L T >>===================================");
 			//System.out.println("__________________________________");
@@ -86,12 +87,12 @@ public class DiseaseClassifier {
 			return diagnosisResult;
 	}
 		//String token = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
-		
+
 	public void evaluate(NaiveBayesUpdateable nbu) throws Exception {
 		Evaluation eval = new Evaluation(structure);
 		eval.crossValidateModel(nbu, structure, 10,  new Random(1));
 		System.out.println(eval.toSummaryString("\nResults\n======\n", false));
 		}
-	
-	
+
+
 }
