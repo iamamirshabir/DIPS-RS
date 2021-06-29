@@ -13,6 +13,8 @@ import weka.core.converters.ConverterUtils.DataSource;
 
 @Component
 public class DiseaseClassifier {
+//1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+
 
 		static Instances structure;
 
@@ -38,7 +40,7 @@ public class DiseaseClassifier {
 		Instance test = new DenseInstance(structure.instance(0));
 		//problem with index starting from 1
 		for (int i=1; i <structure.numAttributes();i++) {
-			test.setValue(i-1, arr[i-1]);
+			test.setValue(i, arr[i-1]);
 			};
 			structure.add(test);
 			//double instClass = nbm.classifyInstance(str.instance(str.numInstances()-1));
@@ -80,7 +82,7 @@ public class DiseaseClassifier {
 			//System.out.println("__________________________________");
 			//System.out.println("Most probably you have,\n"+ diseases[0]+"( "+nbProb[0]+" )");
 			//System.out.println("__________________________________");
-			////System.out.println("Disease Instance = "+str.attribute(0).value((int)instClass));
+			//System.out.println("Disease Instance = "+str.attribute(0).value((int)instClass));
 			//System.out.println("=======================================================");
 			//System.out.println(test.toString());
 			//return ("Most probably you have,\n"+ diseases[0]+"( "+nbProb[0]+" )");
