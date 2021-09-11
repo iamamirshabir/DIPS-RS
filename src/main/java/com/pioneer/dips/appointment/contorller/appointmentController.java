@@ -131,7 +131,7 @@ public class appointmentController {
 				 return ResponseEntity.badRequest().body("Now, Physician has max daily appointments reached");
 			 }
 			 List<Appointment> userappointments = repository.findByUser(uId);
-			 if(userappointments.size() >= 1) {
+			 if(userappointments.size() >= 7) {
 				 return ResponseEntity.badRequest().body("User Cannot have more than one appointment at once");					
 			 }
 			 
